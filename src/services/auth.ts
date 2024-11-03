@@ -1,0 +1,23 @@
+import { ApiResponse, client } from "./api";
+
+
+interface SignInBody {
+    name?: string;
+    email?: string;
+    password: string;
+}
+
+interface SignInResponse {
+    id: string;
+    name: string;
+    email: string;
+    bearer_token: string;
+}
+
+export class AuthService {
+    public async signIn(body: SignInBody): Promise<ApiResponse<SignInResponse>> {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        
+        return await client.post('/auth/login', body);
+    }
+}

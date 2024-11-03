@@ -2,9 +2,12 @@ import { Button } from "@/components/ui/button";
 import { CountrySelect, StateSelect } from "@/components/ui/country-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { useToast } from "@/hooks/use-toast";
+import { UserService } from "@/services/users";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SignUpData } from "./sign-up";
@@ -29,20 +32,34 @@ const formSchema = z.object({
     neighborhood: z.string().max(255, {
         message: 'Neighborhood is too long'
     }).optional(),
+}).superRefine(data => {
+    if (data.country || data.state || data.city) {
+        if (!data.state) {
+            return { state: 'State is required' };
+        }
+
+        if (!data.city) {
+            return { city: 'City is required' };
+        }
+    }
 });
 
 export type AddressFormValues = z.infer<typeof formSchema>;
 
 export function AddressForm(props: AddressFormProps) {
-    const [addressData, setAddressData] = useState<AddressFormValues>({
-        country: props.signUpData.address.country,
-        state: props.signUpData.address.state,
-        city: props.signUpData.address.city,
-        neighborhood: props.signUpData.address.neighborhood
+    const { toast } = useToast();
+    const userService = new UserService();
+    const { mutateAsync: createUser, isPending } = useMutation({
+        mutationFn: userService.createUser,
     });
 
     const addressForm = useForm<AddressFormValues>({
-        defaultValues: addressData,
+        defaultValues: {
+            country: props.signUpData.address.country,
+            city: props.signUpData.address.city,
+            state: props.signUpData.address.state,
+            neighborhood: props.signUpData.address.neighborhood
+        },
         resolver: zodResolver(formSchema)
     });
 
@@ -54,15 +71,35 @@ export function AddressForm(props: AddressFormProps) {
 
     const onSubmit = (data: AddressFormValues) => {
         props.setSignUpData(data);
-        props.setCurrentStep(props.currentStep + 1);
+
+        let hasAddress = (data.country && data.state && data.city);
+
+        createUser({
+            name: props.signUpData.name,
+            email: props.signUpData.email,
+            password: props.signUpData.password,
+            birth_date: props.signUpData.birthDate,
+            address: hasAddress ? {
+                area: data.state,
+                sub_area: data.city,
+                country_code: data.country,
+                locality: data.neighborhood
+            } : undefined
+        }).then((_) => {
+            props.setCurrentStep(props.currentStep + 1);
+        }).catch((err) => {
+            props.setCurrentStep(props.currentStep - 1);
+
+            toast({
+                "title": "Error",
+                "description": err.response.data.message,
+                "variant": 'destructive',
+            });
+        });
     };
 
-    const isCountrySelected = addressData.country != undefined;
-    const isStateSelected = addressData.state != undefined;
-    const isCitySelected = addressData.city != '';
-
     return (
-        <div className="w-96 flex flex-col justify-center gap-4">
+        <div className="w-[480px] mx-2 flex flex-col justify-center gap-4">
             <h1 className="font-bold text-2xl">Address</h1>
             <p className="text-xs">
                 Your address is important for filtering points of interest near your area. 
@@ -78,16 +115,8 @@ export function AddressForm(props: AddressFormProps) {
                                 <FormLabel>Country</FormLabel>
                                 <FormControl>
                                     <CountrySelect 
-                                        value={addressData.country} 
-                                        onChange={(v) => {
-                                            field.onChange(v);
-                                            setAddressData({
-                                                ...addressData,
-                                                country: v
-                                            });
-                                        }}
-                                        name={field.name}
-                                        disabled={field.disabled}
+                                        {...field}
+                                        className="focus:outline-primary focus:ring-0 active:outline-primary active:ring-0"
                                     />
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
@@ -102,17 +131,10 @@ export function AddressForm(props: AddressFormProps) {
                                 <FormLabel>State</FormLabel>
                                 <FormControl>
                                     <StateSelect 
-                                        value={addressData.state} 
-                                        onChange={(v) => {
-                                            field.onChange(v);
-                                            setAddressData({
-                                                ...addressData,
-                                                state: v
-                                            });
-                                        }} 
-                                        country={addressData.country}
-                                        name={field.name}
-                                        disabled={field.disabled}
+                                        {...field}
+                                        className="focus:outline-primary focus:ring-0 active:outline-primary active:ring-0"
+                                        country={addressForm.watch('country')}
+                                        disabled={!addressForm.watch('country')}
                                     />
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
@@ -127,16 +149,10 @@ export function AddressForm(props: AddressFormProps) {
                                 <FormLabel>City</FormLabel>
                                 <FormControl>
                                     <Input 
-                                        placeholder="City" {...field} 
-                                        disabled={!(isCountrySelected && isStateSelected)}
-                                        name={field.name}
-                                        onChange={(e) => {
-                                            field.onChange(e.target.value);
-                                            setAddressData({
-                                                ...addressData,
-                                                city: e.target.value
-                                            });
-                                        }}
+                                        placeholder="City" 
+                                        {...field}
+                                        disabled={!addressForm.watch('state')}
+                                        className="focus-visible:outline-primary focus-visible:ring-0 active:outline-primary active:ring-0"
                                     />
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
@@ -152,16 +168,9 @@ export function AddressForm(props: AddressFormProps) {
                                 <FormControl>
                                     <Input
                                         placeholder="Neighborhood" 
-                                        {...field} 
-                                        disabled={!(isCountrySelected && isStateSelected && isCitySelected)}
-                                        name={field.name}
-                                        onChange={(e) => {
-                                            field.onChange(e.target.value);
-                                            setAddressData({
-                                                ...addressData,
-                                                neighborhood: e.target.value
-                                            });
-                                        }}
+                                        {...field}
+                                        disabled={!addressForm.watch('city')}
+                                        className="focus-visible:outline-primary focus-visible:ring-0 active:outline-primary active:ring-0"
                                     />
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
@@ -178,7 +187,9 @@ export function AddressForm(props: AddressFormProps) {
                         }
                         <Button className={clsx(
                             props.currentStep == 0 ? "w-full" : "w-1/2"
-                        )}>Next</Button>
+                        )} disabled={isPending}>
+                            {isPending ? <Spinner/> : "Sign up"}
+                        </Button>
                     </div>
                 </form>
             </Form>

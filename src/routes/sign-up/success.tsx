@@ -1,4 +1,5 @@
 import { FaCheckCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { SignUpData } from "./sign-up";
 
 interface SignUpSuccessProps {
@@ -13,6 +14,12 @@ export function SignUpSuccess(props: SignUpSuccessProps) {
             <p className="text-sm text-center">
                 An email was sent to <span className="font-medium">{props.data.email}</span> with further instructions.
             </p>
+            <Link
+                to="/sign-in"
+                className="underline text-sm hover:text-secondary"
+            >
+                Go to sign in
+            </Link>
         </div>
     );
 }

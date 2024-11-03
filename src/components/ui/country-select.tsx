@@ -8,15 +8,16 @@ interface CountrySelectProps {
     value?: string;
     onChange?: (value: string) => void;
     placeholder?: string;
+    className?: string;
 }
   
 export function CountrySelect(props: CountrySelectProps) {
     return (
-      <Select onValueChange={props.onChange}>
-        <SelectTrigger ref={props.ref} disabled={props.disabled} name={props.name}>
+      <Select disabled={props.disabled} onValueChange={props.onChange} name={props.name}>
+        <SelectTrigger className={props.className}>
           <SelectValue placeholder={props.placeholder ? props.placeholder : "Select a country"}/>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-background">
             {
                 countryRegionData.countryTuples.map((c) => (
                     <SelectItem key={c[1]} value={c[1]}>
@@ -36,7 +37,8 @@ interface StateSelectProps {
     disabled?: boolean;
     value?: string;
     onChange?: (value: string) => void;
-    placeholder?: string; 
+    placeholder?: string;
+    className?: string;
 }
 
 export function StateSelect(props: StateSelectProps) {
@@ -50,11 +52,11 @@ export function StateSelect(props: StateSelectProps) {
     }
 
     return (
-      <Select disabled={countryData == null || countryData == undefined} onValueChange={props.onChange}>
-        <SelectTrigger ref={props.ref} disabled={props.disabled} name={props.name}>
+      <Select disabled={props.disabled} onValueChange={props.onChange} name={props.name}>
+        <SelectTrigger className={props.className}>
           <SelectValue placeholder={props.placeholder ? props.placeholder : "Select a state"}/>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-background">
             {
                 regions.map((r) => (
                     <SelectItem key={r[1]} value={r[1]}>

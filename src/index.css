@@ -3,11 +3,6 @@
 @tailwind utilities;
 
 /* ... */
-
-body {
-  @apply bg-background text-foreground;
-}
-
 @layer base {
   :root {
     --background: 0 9% 98%;
@@ -18,7 +13,7 @@ body {
 
     --card-foreground: 240 6% 7%;
 
-    --popover: 0 0% 90%;
+    --popover: 0 9% 90%;
 
     --popover-foreground: 240 6% 7%;
 
@@ -42,11 +37,11 @@ body {
 
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 6% 7%;
+    --border: 240 0% 80.9%;
 
-    --input: 240 6% 7%;
+    --input: 240 0% 80.9%;
 
-    --ring: 240 10% 3.9%;
+    --ring: 240 0% 80.9%;
 
     --chart-1: 12 76% 61%;
 
@@ -73,11 +68,11 @@ body {
 
     --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 98%;
+    --primary: 149 94% 35%;
 
-    --primary-foreground: 240 5.9% 10%;
+    --primary-foreground: 0 9% 98%;
 
-    --secondary: 240 3.7% 15.9%;
+    --secondary: 259 51% 54%;
 
     --secondary-foreground: 0 0% 98%;
 

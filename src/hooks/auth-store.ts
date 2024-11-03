@@ -15,9 +15,21 @@ type AuthStore = {
     signOut: () => void,
 };
 
+function _getAuth(): AuthObject | null {
+    const auth = localStorage.getItem('auth') || sessionStorage.getItem('auth');
+    if (!auth) {
+        return null;
+    }
+    return JSON.parse(auth);
+}
+
+function _signedIn(): boolean {
+    return localStorage.getItem('auth') || sessionStorage.getItem('auth') ? true : false;
+}
+
 export const useAuthStore = create<AuthStore>((set) => ({
-    auth: null,
-    signedIn: false,
+    auth: _getAuth(),
+    signedIn: _signedIn(),
     signIn: (auth: AuthObject) => {
         if (auth.rememberMe) {
             localStorage.setItem('auth', JSON.stringify(auth));
@@ -28,5 +40,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
         set({ auth, signedIn: true })
     
     },
-    signOut: () => set({ auth: null, signedIn: false }),
+    signOut: () => {
+        localStorage.removeItem('auth');
+        sessionStorage.removeItem('auth');
+    
+        set({ auth: null, signedIn: false });
+    },
 }));
