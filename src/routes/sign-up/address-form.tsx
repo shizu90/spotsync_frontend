@@ -54,6 +54,7 @@ export function AddressForm(props: AddressFormProps) {
 
     const onSubmit = (data: AddressFormValues) => {
         props.setSignUpData(data);
+        props.setCurrentStep(props.currentStep + 1);
     };
 
     const isCountrySelected = addressData.country != undefined;

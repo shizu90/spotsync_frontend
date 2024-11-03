@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AddressForm, AddressFormValues } from "./address-form";
 import { RegisterForm, RegisterFormValues } from "./register-form";
+import { SignUpSuccess } from "./success";
 
 export type SignUpData = RegisterFormValues & { address: AddressFormValues };
 
@@ -24,7 +25,7 @@ export function SignUp() {
     const steps = [
         {
             'name': 'register',
-            'form': <RegisterForm 
+            'screen': <RegisterForm 
                 currentStep={currentStep} 
                 setCurrentStep={setCurrentStep}
                 signUpData={signUpData}
@@ -33,14 +34,18 @@ export function SignUp() {
         },
         {
             'name': 'address',
-            'form': <AddressForm 
+            'screen': <AddressForm 
                 currentStep={currentStep} 
                 setCurrentStep={setCurrentStep}
                 signUpData={signUpData}
                 setSignUpData={(data: AddressFormValues) => setSignUpData({...signUpData, address: data})}
             />
         },
+        {
+            'name': 'success',
+            'screen': <SignUpSuccess data={signUpData}/>
+        }
     ];
 
-    return steps[currentStep].form;
+    return steps[currentStep].screen;
 }

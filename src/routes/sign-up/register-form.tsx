@@ -74,12 +74,12 @@ export function RegisterForm(props: RegisterFormProps) {
 
     const onSubmit = (data: RegisterFormValues) => {
         props.setSignUpData(data);
-        props.setCurrentStep(1);
+        props.setCurrentStep(props.currentStep + 1);
     };
 
     return (
         <div className="w-96 flex flex-col items-center justify-center gap-4">
-            <h1 className="font-bold text-2xl">Welcome</h1>
+            <h1 className="font-bold text-2xl">Sign Up</h1>
             <Form {...registerForm}>
                 <form className={clsx(
                     "flex flex-col gap-4 w-full"
