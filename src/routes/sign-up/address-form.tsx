@@ -114,8 +114,11 @@ export function AddressForm(props: AddressFormProps) {
                             <FormItem>
                                 <FormLabel>Country</FormLabel>
                                 <FormControl>
-                                    <CountrySelect 
-                                        {...field}
+                                    <CountrySelect
+                                        name={field.name}
+                                        disabled={field.disabled}
+                                        onChange={field.onChange}
+                                        value={field.value}
                                         className="focus:outline-primary focus:ring-0 active:outline-primary active:ring-0"
                                     />
                                 </FormControl>
@@ -131,7 +134,9 @@ export function AddressForm(props: AddressFormProps) {
                                 <FormLabel>State</FormLabel>
                                 <FormControl>
                                     <StateSelect 
-                                        {...field}
+                                        name={field.name}
+                                        onChange={field.onChange}
+                                        value={field.value}
                                         className="focus:outline-primary focus:ring-0 active:outline-primary active:ring-0"
                                         country={addressForm.watch('country')}
                                         disabled={!addressForm.watch('country')}

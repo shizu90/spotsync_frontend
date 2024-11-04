@@ -1,14 +1,12 @@
 import { useAuthStore } from '@/hooks/auth-store';
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-export function PrivateRoute(props: { children: React.ReactNode }): JSX.Element {
-    const { children } = props;
+export function PrivateRoute(): JSX.Element {
     const { signedIn } = useAuthStore();
     const location = useLocation();
 
     return signedIn ? (
-        <>{children}</>
+        <Outlet/>
     ) : (
         <Navigate
             replace={true}

@@ -16,8 +16,6 @@ interface SignInResponse {
 
 export class AuthService {
     public async signIn(body: SignInBody): Promise<ApiResponse<SignInResponse>> {
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        
         return await client.post('/auth/login', body);
     }
 }

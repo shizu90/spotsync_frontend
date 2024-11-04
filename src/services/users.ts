@@ -75,14 +75,10 @@ interface NewPasswordRecoveryBody {
 
 export class UserService {
     public async createUser(body: CreateUserBody): Promise<ApiResponse<User>> {
-        await new Promise(resolve => setTimeout(resolve, 5000));
-
         return await client.post('/users', body);
     }
 
     public async newPasswordRecovery(body: NewPasswordRecoveryBody): Promise<ApiResponse<PasswordRecovery>> {
-        await new Promise(resolve => setTimeout(resolve, 5000));
-
         return await client.post('/password-recovery', body);
     }
 }
