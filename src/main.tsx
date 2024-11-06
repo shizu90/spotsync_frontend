@@ -7,8 +7,10 @@ import App from './app.tsx';
 import { ForgotPassword } from './routes/forgot-password.tsx';
 import { Home } from './routes/home/home.tsx';
 import { PrivateRoute } from './routes/private.tsx';
+import { ResetPassword } from './routes/reset-password.tsx';
 import { SignIn } from './routes/sign-in.tsx';
 import { SignUp } from './routes/sign-up/sign-up.tsx';
+import { UserActivation } from './routes/user-activation.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,6 +23,8 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/user-activation" element={<UserActivation />} />
         </Route>
       </Routes>
     </BrowserRouter>

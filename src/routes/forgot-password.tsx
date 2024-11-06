@@ -1,3 +1,4 @@
+import { SuccessPage } from "@/components/pages/success";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -10,7 +11,6 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { z } from "zod";
 
@@ -41,9 +41,10 @@ export function ForgotPassword() {
         }).then((_) => {
             setSuccess(true);
         }).catch((err) => {
+            console.log(err);
             toast({
                 "title": "Error",
-                "description": err.data.message,
+                "description": err.response.data.message,
                 "variant": "destructive",
             });
         });
@@ -76,11 +77,15 @@ export function ForgotPassword() {
                             {isPending ? <Spinner/> : "Send"}
                         </Button>
                         <DialogContent className="flex flex-col items-center gap-4">
-                            <FaCheckCircle className="size-16 text-primary"/>
-                            <h1 className="font-bold text-md">E-mail sent</h1>
-                            <p className="text-sm">
-                                An e-mail was sent to <span className="font-medium"> {forgotPasswordForm.getValues().email}</span> with further instructions.
-                            </p>
+                            <SuccessPage
+                                title="E-mail sent"
+                                iconSize={16}
+                                children={
+                                    <p className="text-sm">
+                                        An e-mail was sent to <span className="font-medium"> {forgotPasswordForm.getValues().email}</span> with further instructions.
+                                    </p>
+                                }
+                            />
                         </DialogContent>
                     </Dialog>
                 </form>
