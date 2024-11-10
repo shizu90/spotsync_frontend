@@ -1,5 +1,5 @@
 import { readableTime } from "@/lib/time";
-import { Post as PostModel } from "@/services/posts";
+import { Post as PostModel } from "@/types/posts";
 import clsx from "clsx";
 import { FaHeart, FaReply } from "react-icons/fa6";
 import { Link } from "react-router-dom";

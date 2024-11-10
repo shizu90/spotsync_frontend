@@ -1,6 +1,8 @@
 import { Post } from "@/components/post/post";
+import { Spinner } from "@/components/ui/spinner";
 import { useAuthStore } from "@/hooks/auth-store";
-import { Post as PostModel, PostService } from "@/services/posts";
+import { PostService } from "@/services/posts";
+import { Post as PostModel } from "@/types/posts";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useMemo, useRef } from "react";
 
@@ -46,16 +48,17 @@ export function Posts() {
         }, []);
     }, [data]);
 
-    if (isLoading) return <div>Loading...</div>;
-
     return ( 
-        <div className="flex flex-col gap-4 mt-2">
+        <div className="flex flex-col items-center gap-4 mt-2">
             {
                 posts?.map((item) => (
-                    <div ref={lastElementRef} key={item.id}>
+                    <div ref={lastElementRef} key={item.id} className="w-full">
                         <Post post={item}/>
                     </div>
                 ))
+            }
+            {
+                isFetching && <Spinner className="size-8"/>
             }
         </div>
     );

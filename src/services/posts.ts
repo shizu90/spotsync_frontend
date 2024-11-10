@@ -1,36 +1,5 @@
+import { Post, PostVisibility } from "@/types/posts";
 import { ApiResponse, client, Pagination } from "./api";
-import { User } from "./users";
-
-export type PostAttachment = {
-    id: string;
-    file_type: string;
-    file_path: string;
-}
-
-export enum PostVisibility {
-    PUBLIC = 'public',
-    PRIVATE = 'private',
-    FOLLOWERS = 'followers',
-}
-
-export type Post = {
-    id: string;
-    title: string;
-    content: string;
-    attachments: PostAttachment[];
-    creator: User;
-    visibility: PostVisibility;
-    depth_level: number;
-    thread_id: string;
-    created_at: string;
-    updated_at: string;
-    parent_id: string;
-    group: any;
-    children_posts: Post[];
-    total_childrens: number;
-    total_likes: number;
-    liked: boolean;
-}
 
 interface ListPostsQuery {
     group_id?: string;
@@ -64,6 +33,8 @@ export class PostService {
     }
 
     public async paginatePosts(query?: ListPostsQuery): Promise<ApiResponse<Pagination<Post>>> {
+        await new Promise((resolve) => setTimeout(resolve, 8000));
+
         return await client.get('/threads', {
             params: {
                 paginate: true,
