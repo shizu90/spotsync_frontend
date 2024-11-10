@@ -132,23 +132,23 @@ export function SignIn() {
                 <TabsList className="grid w-full grid-cols-2 bg-transparent">
                     <TabsTrigger value="email" className={clsx(
                         "border-b-transparent rounded-none border-b-2",
-                        "data-[state=active]:border-b-secondary data-[state=active]:bg-transparent data-[state=active]:ring-0 data-[state=active]:shadow-none"
+                        "data-[state=active]:border-b-secondary", 
+                        "data-[state=active]:ring-0 data-[state=active]:shadow-none"
                     )}>
                         Sign in with e-mail
                     </TabsTrigger>
                     <TabsTrigger value="name" className={clsx(
                         "border-b-transparent rounded-none border-b-2",
-                        "data-[state=active]:border-b-secondary data-[state=active]:bg-transparent data-[state=active]:ring-0 data-[state=active]:shadow-none"
+                        "data-[state=active]:border-b-secondary", 
+                        "data-[state=active]:ring-0 data-[state=active]:shadow-none"
                     )}>
                         Sign in with name
                     </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="name">
+                <TabsContent value="name" tabIndex={undefined}>
                     <Form {...signInWithNameForm}>
-                        <form className={clsx(
-                            "flex flex-col gap-4 w-full"
-                        )} onSubmit={signInWithNameForm.handleSubmit(signInWithName)}>
+                        <form className="flex flex-col gap-4 w-full" onSubmit={signInWithNameForm.handleSubmit(signInWithName)}>
                             <FormField
                                 control={signInWithNameForm.control}
                                 name="name"
@@ -159,7 +159,6 @@ export function SignIn() {
                                             <Input 
                                                 {...field}
                                                 placeholder="Name"
-                                                className="focus-visible:outline-primary focus-visible:ring-0 active:outline-primary active:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage className="text-xs"/>
@@ -178,7 +177,6 @@ export function SignIn() {
                                                     placeholder="Password" 
                                                     {...field} 
                                                     type="password"
-                                                    className="focus-visible:outline-primary focus-visible:ring-0 active:outline-primary active:ring-0"
                                                 />
                                             </FormControl>
                                             <FormMessage className="text-xs"/>
@@ -186,7 +184,7 @@ export function SignIn() {
                                     )}
                                 />
                                 <Link
-                                    className="text-sm underline cursor-pointer hover:text-secondary focus:text-secondary duration-100 text-end mt-2"
+                                    className="text-sm underline cursor-pointer hover:text-secondary focus:text-secondary duration-100 text-end mt-2 outline-none"
                                     to="/forgot-password"
                                 >
                                     Forgout your password?
@@ -216,7 +214,7 @@ export function SignIn() {
                         </form>
                     </Form>
                 </TabsContent>
-                <TabsContent value="email">
+                <TabsContent value="email" tabIndex={undefined}>
                     <Form {...signInWithEmailForm}>
                         <form className={clsx(
                             "flex flex-col gap-4"
@@ -231,7 +229,6 @@ export function SignIn() {
                                             <Input 
                                                 placeholder="example@email.com" 
                                                 {...field}
-                                                className="focus-visible:outline-primary focus-visible:ring-0 active:outline-primary active:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage className="text-xs"/>
@@ -250,7 +247,6 @@ export function SignIn() {
                                                     placeholder="Password" 
                                                     {...field} 
                                                     type="password"
-                                                    className="focus-visible:outline-primary focus-visible:ring-0 active:outline-primary active:ring-0"
                                                 />
                                             </FormControl>
                                             <FormMessage className="text-xs"/>
@@ -258,7 +254,7 @@ export function SignIn() {
                                     )}
                                 />
                                 <Link
-                                    className="text-sm underline cursor-pointer hover:text-secondary focus:text-secondary duration-100 text-end mt-2"
+                                    className="text-sm underline cursor-pointer hover:text-secondary focus:text-secondary duration-100 text-end mt-2 outline-none"
                                     to="/forgot-password"
                                 >
                                     Forgout your password?
@@ -289,7 +285,7 @@ export function SignIn() {
                 </TabsContent>
             </Tabs>
             <Link 
-                className="text-sm underline cursor-pointer mt-4 hover:text-secondary focus:text-secondary duration-100"
+                className="text-sm underline cursor-pointer mt-4 hover:text-secondary focus:text-secondary duration-100 outline-none"
                 to="/sign-up"
             >
                 Don't have an account? Sign up here

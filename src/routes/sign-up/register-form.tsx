@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -11,8 +10,8 @@ import { z } from "zod";
 import { SignUpData } from "./sign-up";
 
 interface RegisterFormProps {
-    currentStep: number;
-    setCurrentStep: (step: number) => void;
+    next: () => void;
+    prev?: () => void;
     signUpData: SignUpData;
     setSignUpData: (data: RegisterFormValues) => void;
 }
@@ -59,7 +58,7 @@ const formSchema = z.object({
 export type RegisterFormValues = z.infer<typeof formSchema>;
 
 export function RegisterForm(props: RegisterFormProps) {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const registerForm = useForm<RegisterFormValues>({
         defaultValues: {
@@ -69,21 +68,20 @@ export function RegisterForm(props: RegisterFormProps) {
             passwordConfirm: props.signUpData.passwordConfirm,
             birthDate: props.signUpData.birthDate,
         },
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        mode: 'onBlur',
     });
 
     const onSubmit = (data: RegisterFormValues) => {
         props.setSignUpData(data);
-        props.setCurrentStep(props.currentStep + 1);
+        props.next();
     };
 
     return (
-        <div className="w-[480px] mx-2 flex flex-col items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center mx-2 gap-4">
             <h1 className="font-bold text-2xl">Sign Up</h1>
             <Form {...registerForm}>
-                <form className={clsx(
-                    "flex flex-col gap-4 w-full"
-                )} onSubmit={registerForm.handleSubmit(onSubmit)}>
+                <form className="flex flex-col gap-4 w-full" onSubmit={registerForm.handleSubmit(onSubmit)}>
                     <FormField
                         control={registerForm.control}
                         name="name"
@@ -91,7 +89,7 @@ export function RegisterForm(props: RegisterFormProps) {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Name" {...field} className="focus-visible:outline-primary focus-visible:ring-0"/>
+                                    <Input placeholder="Name" {...field}/>
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
                             </FormItem>
@@ -104,7 +102,7 @@ export function RegisterForm(props: RegisterFormProps) {
                             <FormItem>
                                 <FormLabel>E-mail</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="example@email.com" {...field} className="focus-visible:outline-primary focus-visible:ring-0"/>
+                                    <Input placeholder="example@email.com" {...field}/>
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
                             </FormItem>
@@ -118,7 +116,7 @@ export function RegisterForm(props: RegisterFormProps) {
                                 <FormLabel>Password</FormLabel>
                                 <div className="flex gap-4 items-center">
                                     <FormControl>
-                                        <Input placeholder="Password" {...field} type={showPassword ? "text" : "password"} className="focus-visible:outline-primary focus-visible:ring-0"/>
+                                        <Input placeholder="Password" {...field} type={showPassword ? "text" : "password"}/>
                                     </FormControl>
                                     {
                                         showPassword ? (
@@ -143,7 +141,7 @@ export function RegisterForm(props: RegisterFormProps) {
                             <FormItem>
                                 <FormLabel>Confirm password</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Password" {...field} type={showPassword ? "text" : "password"} className="focus-visible:outline-primary focus-visible:ring-0"/>
+                                        <Input placeholder="Password" {...field} type={showPassword ? "text" : "password"}/>
                                     </FormControl>
                                 <FormMessage className="text-xs"/>
                             </FormItem>
@@ -154,12 +152,10 @@ export function RegisterForm(props: RegisterFormProps) {
                             control={registerForm.control}
                             name="birthDate"
                             render={({ field }) => (
-                                <FormItem
-                                    className="w-1/2"
-                                >
+                                <FormItem className="w-1/2">
                                     <FormLabel>Birth date</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Birth date" {...field} type="date" className="focus-visible:outline-primary focus-visible:ring-0"/>
+                                            <Input placeholder="Birth date" {...field} type="date"/>
                                         </FormControl>
                                     <FormMessage className="text-xs"/>
                                 </FormItem>
@@ -169,12 +165,10 @@ export function RegisterForm(props: RegisterFormProps) {
                             control={registerForm.control}
                             name="phoneNumber"
                             render={({ field }) => (
-                                <FormItem
-                                    className="w-1/2"
-                                >
+                                <FormItem className="w-1/2">
                                     <FormLabel>Phone number (optional)</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Phone number" {...field} type="text" className="focus-visible:outline-primary focus-visible:ring-0"/>
+                                            <Input placeholder="Phone number" {...field} type="text"/>
                                         </FormControl>
                                     <FormMessage className="text-xs"/>
                                 </FormItem>
@@ -184,7 +178,9 @@ export function RegisterForm(props: RegisterFormProps) {
                     <Button>Next</Button>
                 </form>
             </Form>
-            <Link to="/sign-in" className="text-sm underline cursor-pointer mt-4 hover:text-secondary focus:text-secondary duration-100">Already have an account? Sign in</Link>
+            <Link to="/sign-in" className="text-sm underline cursor-pointer mt-4 hover:text-secondary focus:text-secondary duration-100 outline-none">
+                Already have an account? Sign in
+            </Link>
         </div>
     );
 }

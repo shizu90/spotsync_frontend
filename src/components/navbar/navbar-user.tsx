@@ -10,9 +10,9 @@ export function NavbarUser() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="focus:outline-primary">
                 <div className={clsx(
-                    "bg-popover text-popover-foreground rounded-lg",
+                    "rounded-lg",
                     "flex items-center justify-center gap-2 px-4 py-2"
                 )}>
                     <h3 className="text-sm">{auth?.userName}</h3>
@@ -22,7 +22,7 @@ export function NavbarUser() {
                     <FaChevronDown className="size-4"/>
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="border-none w-52" align="end">
+            <DropdownMenuContent className="border-none w-52 bg-background" align="end">
                 <DropdownMenuGroup>
                     <DropdownMenuItem className="flex items-center justify-between">
                         <h3>Profile</h3>

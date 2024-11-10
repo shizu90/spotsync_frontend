@@ -5,8 +5,10 @@ import { SignUpSuccess } from "./success";
 
 export type SignUpData = RegisterFormValues & { address: AddressFormValues };
 
+type SignUpStep = 'register' | 'address' | 'success';
+
 export function SignUp() {
-    const [currentStep, setCurrentStep] = useState(0);
+    const [currentStep, setCurrentStep] = useState<SignUpStep>('register');
     const [signUpData, setSignUpData] = useState<SignUpData>({
         name: '',
         email: '',
@@ -22,30 +24,22 @@ export function SignUp() {
         }
     });
 
-    const steps = [
-        {
-            'name': 'register',
-            'screen': <RegisterForm 
-                currentStep={currentStep} 
-                setCurrentStep={setCurrentStep}
-                signUpData={signUpData}
-                setSignUpData={(data: RegisterFormValues) => setSignUpData({...signUpData, ...data})}
-            />
-        },
-        {
-            'name': 'address',
-            'screen': <AddressForm 
-                currentStep={currentStep} 
-                setCurrentStep={setCurrentStep}
-                signUpData={signUpData}
-                setSignUpData={(data: AddressFormValues) => setSignUpData({...signUpData, address: data})}
-            />
-        },
-        {
-            'name': 'success',
-            'screen': <SignUpSuccess data={signUpData}/>
-        }
-    ];
+    const steps = {
+        'register': <RegisterForm 
+            next={() => setCurrentStep('address')}
+            signUpData={signUpData} 
+            setSignUpData={(data: RegisterFormValues) => setSignUpData({...signUpData, ...data})}/>,
+        'address': <AddressForm
+            next={() => setCurrentStep('success')}
+            prev={() => setCurrentStep('register')}
+            signUpData={signUpData}
+            setSignUpData={(data: AddressFormValues) => setSignUpData({...signUpData, address: data})}/>,
+        'success': <SignUpSuccess data={signUpData}/>
+    };
 
-    return steps[currentStep].screen;
+    return (
+        <div className="w-[480px]">
+            {steps[currentStep]}
+        </div>
+    );
 }

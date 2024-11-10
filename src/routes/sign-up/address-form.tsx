@@ -7,14 +7,13 @@ import { useToast } from "@/hooks/use-toast";
 import { UserService } from "@/services/users";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SignUpData } from "./sign-up";
 
 interface AddressFormProps {
-    currentStep: number;
-    setCurrentStep: (step: number) => void;
+    next: () => void,
+    prev: () => void,
     signUpData: SignUpData;
     setSignUpData: (data: AddressFormValues) => void;
 }
@@ -60,13 +59,12 @@ export function AddressForm(props: AddressFormProps) {
             state: props.signUpData.address.state,
             neighborhood: props.signUpData.address.neighborhood
         },
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        mode: 'onBlur',
     });
 
     const handleBack = () => {
-        if (props.currentStep > 0) {
-            props.setCurrentStep(props.currentStep - 1);
-        }
+        props.prev();
     };
 
     const onSubmit = (data: AddressFormValues) => {
@@ -86,10 +84,9 @@ export function AddressForm(props: AddressFormProps) {
                 locality: data.neighborhood
             } : undefined
         }).then((_) => {
-            props.setCurrentStep(props.currentStep + 1);
+            props.next();
         }).catch((err) => {
-            props.setCurrentStep(props.currentStep - 1);
-
+            props.prev();
             toast({
                 "title": "Error",
                 "description": err.response.data.message,
@@ -99,7 +96,7 @@ export function AddressForm(props: AddressFormProps) {
     };
 
     return (
-        <div className="w-[480px] mx-2 flex flex-col justify-center gap-4">
+        <div className="mx-2 flex flex-col justify-center gap-4">
             <h1 className="font-bold text-2xl">Address</h1>
             <p className="text-xs">
                 Your address is important for filtering points of interest near your area. 
@@ -119,7 +116,6 @@ export function AddressForm(props: AddressFormProps) {
                                         disabled={field.disabled}
                                         onChange={field.onChange}
                                         value={field.value}
-                                        className="focus:outline-primary focus:ring-0 active:outline-primary active:ring-0"
                                     />
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
@@ -137,7 +133,6 @@ export function AddressForm(props: AddressFormProps) {
                                         name={field.name}
                                         onChange={field.onChange}
                                         value={field.value}
-                                        className="focus:outline-primary focus:ring-0 active:outline-primary active:ring-0"
                                         country={addressForm.watch('country')}
                                         disabled={!addressForm.watch('country')}
                                     />
@@ -157,7 +152,6 @@ export function AddressForm(props: AddressFormProps) {
                                         placeholder="City" 
                                         {...field}
                                         disabled={!addressForm.watch('state')}
-                                        className="focus-visible:outline-primary focus-visible:ring-0 active:outline-primary active:ring-0"
                                     />
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
@@ -175,7 +169,6 @@ export function AddressForm(props: AddressFormProps) {
                                         placeholder="Neighborhood" 
                                         {...field}
                                         disabled={!addressForm.watch('city')}
-                                        className="focus-visible:outline-primary focus-visible:ring-0 active:outline-primary active:ring-0"
                                     />
                                 </FormControl>
                                 <FormMessage className="text-xs"/>
@@ -183,16 +176,10 @@ export function AddressForm(props: AddressFormProps) {
                         )}
                     />
                     <div className="flex items-center justify-between gap-2 w-full">
-                        {props.currentStep > 0 &&
-                            <Button 
-                                onClick={handleBack}
-                                type="button"
-                                className="bg-secondary text-secondary-foreground w-1/2 hover:bg-secondary/80"
-                            >Back</Button>
-                        }
-                        <Button className={clsx(
-                            props.currentStep == 0 ? "w-full" : "w-1/2"
-                        )} disabled={isPending}>
+                        <Button onClick={handleBack} type="button" className="w-1/2" variant="secondary">
+                            Back
+                        </Button>
+                        <Button className="w-1/2" disabled={isPending}>
                             {isPending ? <Spinner/> : "Sign up"}
                         </Button>
                     </div>

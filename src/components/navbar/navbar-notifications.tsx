@@ -48,7 +48,7 @@ const notifications = [
 export function NavbarNotifications() {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="px-2 focus:outline-primary">
                 <FaBell className="size-5"/>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="border-none w-72" align="end">

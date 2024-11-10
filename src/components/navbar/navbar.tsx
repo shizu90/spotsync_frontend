@@ -24,7 +24,7 @@ export function Navbar() {
                         <Icon className="size-10"/>
                         <NavbarSearch/>
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex border border-foreground/10 shadow-sm rounded-lg px-4">
                         <NavbarHome/>
                         <NavbarNotifications/>
                         <NavbarUser/>

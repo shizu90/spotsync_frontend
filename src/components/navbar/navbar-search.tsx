@@ -43,7 +43,7 @@ export function NavbarSearch() {
         <Form {...searchForm}>
             <form
                 onSubmit={searchForm.handleSubmit(onSubmit)} 
-                className="flex items-center justify-center bg-popover text-popover-foreground rounded-lg pr-4 max-[1000px]:px-2">
+                className="flex items-center justify-center rounded-lg max-[1000px]:px-2 shadow-sm border border-foreground/10">
                 <FormField
                     name="subject"
                     render={({ field }) => (
@@ -54,10 +54,10 @@ export function NavbarSearch() {
                                 value={field.value}
                                 onValueChange={(value) => field.onChange(value)}
                             >
-                                <SelectTrigger className="w-52 border-none max-[1000px]:hidden">
+                                <SelectTrigger className="w-52 border-none max-[1000px]:hidden shadow-none focus-visible:outline-offset-1">
                                     <SelectValue/>
                                 </SelectTrigger>
-                                <SelectContent className="bg-popover border-none" >
+                                <SelectContent className="border-none bg-background">
                                     <SelectGroup>
                                         {
                                             search_items.map((item, _) => (
@@ -79,13 +79,13 @@ export function NavbarSearch() {
                             {...field}
                             className={clsx(
                                 "border-none outline-none mr-2",
-                                "max-[1000px]:hidden"
+                                "max-[1000px]:hidden shadow-none focus-visible:outline-offset-1"
                             )}
                             placeholder={`Search for something`}
                         />
                     )}
                 />
-                <Button className="bg-transparent hover:bg-transparent border-none text-foreground shadow-none">
+                <Button className="bg-transparent hover:bg-transparent border-none text-foreground shadow-none focus:bg-transparent">
                     <FaSearch className="w-8 cursor-pointer"/>
                 </Button>
             </form>
