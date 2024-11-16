@@ -11,7 +11,7 @@ export function Navbar() {
 
     return (
         <header className={clsx(
-            "sticky top-0 z-10 h-12",
+            "top-0 z-10 h-12",
             "bg-background text-foreground",
             "border-b border-b-black border-opacity-10"
         )}>

@@ -1,3 +1,4 @@
+import { User } from "@/types/users";
 import { ApiResponse, client } from "./api";
 
 
@@ -9,8 +10,7 @@ interface SignInBody {
 
 export interface SignInResponse {
     id: string;
-    name: string;
-    email: string;
+    user: User;
     bearer_token: string;
 }
 

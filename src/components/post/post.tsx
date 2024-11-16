@@ -1,6 +1,7 @@
 import { readableTime } from "@/lib/time";
 import { Post as PostModel } from "@/types/posts";
 import clsx from "clsx";
+import { useState } from "react";
 import { FaHeart, FaReply } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarImage } from "../ui/avatar";
@@ -11,11 +12,28 @@ interface PostProps {
 }
 
 export function Post(props: PostProps) {
+    const [post, setPost] = useState<PostModel>(props.post);
+    
+    const likePost = () => {
+        setPost({
+            ...post,
+            liked: !post.liked,
+            total_likes: post.liked ? post.total_likes - 1 : post.total_likes + 1
+        });
+    };
+
+    const replyPost = () => {
+        setPost({
+            ...post,
+            total_childrens: post.total_childrens + 1
+        });
+    };
+
     return (
         <div className="bg-background border border-foreground/10 shadow-sm flex flex-col gap-4 p-4 rounded-lg">
             <div className="flex gap-4">
                 {
-                    props.post.group ? (
+                    post.group ? (
                         <div className="flex flex-col relative w-10">
                             <Avatar className="size-8">
                                 <AvatarImage src="src/assets/spotsync_icon.svg" />
@@ -32,41 +50,41 @@ export function Post(props: PostProps) {
                 }
                 <div className="flex flex-col gap-[-2]">
                     {
-                        props.post.group ? (
+                        post.group ? (
                             <div className="flex gap-2 items-center">
-                                <Link to={`/users/${props.post.creator.id}`} className="font-bold text-md">{props.post.creator.profile.display_name}</Link>
-                                <Link to={`/groups/${props.post.group.id}`} className="text-xs text-muted-foreground">{props.post.group.name}</Link>
+                                <Link to={`/users/${post.creator.id}`} className="font-bold text-md">{post.creator.profile.display_name}</Link>
+                                <Link to={`/groups/${post.group.id}`} className="text-xs text-muted-foreground">{post.group.name}</Link>
                             </div>    
                         ) : (
-                            <Link to={`/users/${props.post.creator.id}`} className="font-bold text-md">{props.post.creator.profile.display_name}</Link>
+                            <Link to={`/users/${post.creator.id}`} className="font-bold text-md">{post.creator.profile.display_name}</Link>
                         )
                     }
                     <span className="text-xs text-muted-foreground">
-                        {readableTime(props.post.created_at)}
+                        {readableTime(post.created_at)}
                     </span>
                 </div>
             </div>
             <div>
                 <p className="text-sm">
-                    {props.post.content}
+                    {post.content}
                 </p>
                 <div className="flex gap-4 items-center">
                     {
-                        props.post.attachments.map((attachment) => <PostAttachment attachment={attachment}/>)
+                        post.attachments.map((attachment) => <PostAttachment attachment={attachment}/>)
                     }
                 </div>
             </div>
             <div className="flex gap-4 justify-end">
-                <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary">
+                <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary" onClick={() => replyPost()}>
                     <FaReply/>
-                    <span>{props.post.total_childrens}</span>
+                    <span>{post.total_childrens} replies</span>
                 </button>
                 <button className={clsx(
                     "flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary",
-                    props.post.liked ? "text-secondary" : "text-foreground"
-                )}>
+                    post.liked ? "text-secondary" : "text-foreground"
+                )} onClick={() => likePost()}>
                     <FaHeart/>
-                    <span>{props.post.total_likes}</span>
+                    <span>{post.total_likes} likes</span>
                 </button>
             </div>
         </div>

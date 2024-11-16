@@ -13,9 +13,9 @@ export function NavbarUser() {
             <DropdownMenuTrigger className="focus:outline-primary">
                 <div className={clsx(
                     "rounded-lg",
-                    "flex items-center justify-center gap-2 px-4 py-2"
+                    "flex items-center justify-center gap-2 px-2 py-2"
                 )}>
-                    <h3 className="text-sm">{auth?.userName}</h3>
+                    <h3 className="text-sm">{auth?.user.profile.display_name}</h3>
                     <Avatar className="size-6">
                         <AvatarImage src="src/assets/spotsync_icon.svg" />
                     </Avatar>

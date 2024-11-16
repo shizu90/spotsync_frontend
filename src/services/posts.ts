@@ -33,8 +33,6 @@ export class PostService {
     }
 
     public async paginatePosts(query?: ListPostsQuery): Promise<ApiResponse<Pagination<Post>>> {
-        await new Promise((resolve) => setTimeout(resolve, 8000));
-
         return await client.get('/threads', {
             params: {
                 paginate: true,

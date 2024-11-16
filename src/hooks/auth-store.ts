@@ -1,10 +1,9 @@
+import { User } from '@/types/users';
 import { create } from 'zustand';
 
 export type AuthObject = {
     bearerToken: string;
-    userId: string;
-    userName: string;
-    email: string;
+    user: User;
     rememberMe: boolean;
 };
 

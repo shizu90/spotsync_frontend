@@ -1,4 +1,4 @@
-import { PostAttachment as PostAttachmentModel } from "@/services/posts";
+import { PostAttachment as PostAttachmentModel } from "@/types/posts";
 
 interface PostAttachmentProps {
     attachment: PostAttachmentModel;
@@ -6,6 +6,8 @@ interface PostAttachmentProps {
 
 export function PostAttachment(props: PostAttachmentProps) {
     return (
-        <></>
+        <div>
+
+        </div>
     );
 }

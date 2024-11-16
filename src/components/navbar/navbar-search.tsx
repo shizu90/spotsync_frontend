@@ -43,7 +43,7 @@ export function NavbarSearch() {
         <Form {...searchForm}>
             <form
                 onSubmit={searchForm.handleSubmit(onSubmit)} 
-                className="flex items-center justify-center rounded-lg max-[1000px]:px-2 shadow-sm border border-foreground/10">
+                className="flex items-center justify-center rounded-lg max-[1000px]:px-0 shadow-sm border border-foreground/10">
                 <FormField
                     name="subject"
                     render={({ field }) => (

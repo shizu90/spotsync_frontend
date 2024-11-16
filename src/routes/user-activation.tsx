@@ -28,11 +28,9 @@ export function UserActivation() {
         useEffect(() => {
             activateUser().then((res) => {
                 signIn({
-                    userId: res.data.data.id,
                     bearerToken: res.data.data.bearer_token,
-                    email: res.data.data.email,
+                    user: res.data.data.user,
                     rememberMe: false,
-                    userName: res.data.data.name,
                 });
     
                 navigate('/');

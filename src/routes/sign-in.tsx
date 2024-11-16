@@ -75,16 +75,14 @@ export function SignIn() {
             password: values.password,
         }).then((res) => {
             signIn({
-                userId: res.data.data.id,
                 bearerToken: res.data.data.bearer_token,
-                email: res.data.data.email,
+                user: res.data.data.user,
                 rememberMe: values.rememberMe ?? false,
-                userName: res.data.data.name,
             });
 
             toast({
                 "title": "Welcome back!",
-                "description": "Signed in as " + res.data.data.name,
+                "description": "Signed in as " + res.data.data.user.credentials.name,
             });
 
             navigate("/");
@@ -103,16 +101,14 @@ export function SignIn() {
             password: values.password,
         }).then((res) => {
             signIn({
-                userId: res.data.data.id,
                 bearerToken: res.data.data.bearer_token,
-                email: res.data.data.email,
+                user: res.data.data.user,
                 rememberMe: values.rememberMe ?? false,
-                userName: res.data.data.name,
             });
 
             toast({
                 "title": "Welcome back!",
-                "description": "Signed in as " + res.data.data.name,
+                "description": "Signed in as " + res.data.data.user.credentials.name,
             });
 
             navigate("/");
