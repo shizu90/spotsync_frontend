@@ -91,7 +91,8 @@ export function CreatePost() {
                 </div>
                 <div className="flex gap-4 items-center justify-start">
                     {
-                        <div className="flex gap-2 flex-wrap mt-4">
+                        selectedFiles.length > 0 &&
+                        <div className="flex gap-2 flex-wrap">
                             {
                                 selectedFiles.map((uploadedFile) => (
                                     <div key={uploadedFile.file.name} className="relative">
@@ -137,17 +138,25 @@ export function CreatePost() {
                             />
                         </div>
                         <div className="flex relative hover:text-secondary duration-100">
-                            <FaRegImage className="text-md size-4"/>
+                            <div className="flex gap-2 items-center cursor-pointer">
+                                <FaRegImage className="text-md size-4"/>
+                                <span className="text-xs">Image</span>
+                            </div>
                             <Input
                                 type="file"
                                 accept="image/*" 
                                 multiple 
                                 onChange={(e) => updateSelectedFiles(e.target.files)}
-                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                className="absolute inset-0 opacity-0 w-full h-full p-0 m-0"
                             />
                         </div>
                         <button className="outline-none text-foreground focus:text-secondary duration-100 hover:text-secondary">
-                            <FaRegSmile className="text-md size-4"/>
+                            <div className="flex gap-2 items-center cursor-pointer">
+                                <FaRegSmile className="text-md size-4"/>
+                                <span className="text-xs">
+                                    Emoji
+                                </span>
+                            </div>
                         </button>
                     </div>
                     <Button className="focus-visible:outline-primary focus-visible:ring-0">

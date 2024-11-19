@@ -1,36 +1,33 @@
-import { Spot } from "@/components/spots/spot";
+import { Group } from "@/components/groups/group";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuthStore } from "@/hooks/auth-store";
-import { SpotService } from "@/services/spots";
+import { GroupService } from "@/services/groups";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
-export function ClosestSpots() {
+export function YourGroups() {
     const { auth } = useAuthStore();
-    const isMobile = useMediaQuery("(max-width: 1000px)");
 
     if (!auth) {
         return null;
     }
 
-    const spotService = new SpotService(auth.bearerToken);
+    const groupService = new GroupService(auth.bearerToken);
+    const isMobile = useMediaQuery("(max-width: 1000px)");
+
     const { data, isLoading } = useQuery({
-        queryKey: ["trending-spots"],
-        queryFn: async () => {
-            return await spotService.paginateSpots({
-                paginate: true,
-                limit: 10,
-                sort: 'distance',
-            });
-        }
+        queryKey: ['your-groups'],
+        queryFn: () => groupService.paginateGroups({
+            limit: 5,
+        }),
     });
 
     return !isMobile && (
         <article className="flex flex-col gap-4">
             <header>
                 <h1 className="font-medium text-md">
-                    Spots near you
+                    Your groups
                 </h1>
             </header>
             <main className="h-fit border border-foreground/10 rounded-lg shadow-sm">
@@ -41,23 +38,23 @@ export function ClosestSpots() {
                         data && data.data.data.items.length > 0 ? (
                             <ul>
                                 {
-                                    data?.data.data.items.map((spot) => (
+                                    data?.data.data.items.map((group) => (
                                         <li>
-                                            <Spot spot={spot} key={spot.id}/>
+                                            <Group group={group} key={group.id}/>
                                         </li>
                                     ))
                                 }
                             </ul>
                         ) : (
                             <div className="p-4 text-center text-foreground text-xs">
-                                No spots near you
+                                No groups
                             </div>
                         )
                     )
                 }
                 <footer className="text-center text-xs text-foreground hover:underline my-4">
-                    <Link to={`/spots?sort=distance`}>
-                        View more spots near you
+                    <Link to={`/groups?participating=true`}>
+                        View more groups
                     </Link>
                 </footer>
             </main>

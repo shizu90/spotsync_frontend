@@ -2,6 +2,7 @@ import { SpotEvent } from "@/components/spot-events/spot-event";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuthStore } from "@/hooks/auth-store";
 import { SpotEventService } from "@/services/spot-events";
+import { SpotEventStatus } from "@/types/spot-events";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
@@ -19,6 +20,8 @@ export function OnGoingSpotEvents() {
     const { data, isLoading } = useQuery({
         queryKey: ['on-going-spot-events'],
         queryFn: async () => await spotEventService.paginateSpotEvents({
+            status: SpotEventStatus.ONGOING,
+            limit: 5,
         })
     });
 
@@ -34,19 +37,26 @@ export function OnGoingSpotEvents() {
                     isLoading ? (
                         <Spinner/>
                     ) : (
-                        <ul>
-                            {
-                                data?.data.data.items.map((spotEvent) => (
-                                    <li>
-                                        <SpotEvent spotEvent={spotEvent} key={spotEvent.id}/>
-                                    </li>
-                                ))
-                            }
-                        </ul>
+                        data && data.data.data.items.length > 0 ? (
+                                <ul>
+                                    {
+                                        data?.data.data.items.map((spotEvent) => (
+                                            <li>
+                                                <SpotEvent spotEvent={spotEvent} key={spotEvent.id}/>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                        ) : (
+                            <div className="p-4 text-center text-foreground text-xs">
+                                No on-going spot events
+                            </div>
+                        )
+                            
                     )
                 }
                 <footer className="text-center text-xs text-foreground hover:underline my-4">
-                    <Link to={`/spot-events?category=on-going`}>
+                    <Link to={`/spot-events?status=ongoing`}>
                         View more on-going spot events
                     </Link>
                 </footer>

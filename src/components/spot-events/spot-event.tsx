@@ -34,7 +34,7 @@ export function SpotEvent(props: SpotEventProps) {
                                     "bg-primary animate-pulse" :
                                     props.spotEvent.status == SpotEventStatus.CANCELLED ?
                                         "bg-red-500" :
-                                        "bg-blue-700"
+                                        "bg-secondary"
                         )}></div>
                         <div className={clsx(
                             "text-xs",

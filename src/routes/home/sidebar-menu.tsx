@@ -1,7 +1,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuthStore } from "@/hooks/auth-store";
 import clsx from "clsx";
-import { FaCalendarAlt, FaHome } from "react-icons/fa";
+import { FaCalendarAlt } from "react-icons/fa";
 import { FaCity, FaFolder, FaList, FaUserGroup } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
@@ -19,16 +19,6 @@ export function SidebarMenu() {
                         <FaList/>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="bg-background text-sm">
-                        <Link 
-                            to="#" 
-                            className={clsx(
-                                "text-foreground hover:bg-primary duration-100 px-4 py-2 rounded-md hover:text-background",
-                                "flex items-center gap-2"
-                            )}
-                        >
-                            <FaHome/>
-                            <span>Home</span>
-                        </Link>
                         <Link 
                             to="#" 
                             className={clsx(
@@ -74,16 +64,6 @@ export function SidebarMenu() {
             </div>
         ) : (
             <div className="flex flex-col gap-2 shadow-sm border border-foreground/10 rounded-lg text-sm p-2 h-fit">
-                <Link 
-                    to="#" 
-                    className={clsx(
-                        "text-foreground hover:bg-primary duration-100 px-4 py-2 rounded-md hover:text-background",
-                        "flex items-center gap-2"
-                    )}
-                >
-                    <FaHome/>
-                    <span>Home</span>
-                </Link>
                 <Link 
                     to="#" 
                     className={clsx(
