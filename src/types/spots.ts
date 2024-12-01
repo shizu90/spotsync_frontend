@@ -3,6 +3,8 @@ import { User } from "./users";
 export type SpotPhoto = {
     id: string;
     file_path: string;
+    file_content: string;
+    file_type: string;
 }
 
 export type Spot = {

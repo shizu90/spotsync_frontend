@@ -1,19 +1,12 @@
 import { Group } from "@/components/groups/group";
 import { Spinner } from "@/components/ui/spinner";
-import { useAuthStore } from "@/hooks/auth-store";
 import { GroupService } from "@/services/groups";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 export function YourGroups() {
-    const { auth } = useAuthStore();
-
-    if (!auth) {
-        return null;
-    }
-
-    const groupService = new GroupService(auth.bearerToken);
+    const groupService = new GroupService();
     const isMobile = useMediaQuery("(max-width: 1000px)");
 
     const { data, isLoading } = useQuery({
@@ -30,7 +23,7 @@ export function YourGroups() {
                     Your groups
                 </h1>
             </header>
-            <main className="h-fit border border-foreground/10 rounded-lg shadow-sm">
+            <main className="h-fit border border-foreground/10 rounded-lg shadow-sm bg-popover">
                 {
                     isLoading ? (
                         <Spinner/>

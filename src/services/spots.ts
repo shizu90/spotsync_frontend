@@ -1,5 +1,6 @@
 import { Spot } from "@/types/spots";
-import { ApiResponse, client, Pagination } from "./api";
+import { ApiResponse, Pagination } from "./api";
+import { ApiService } from "./api-service";
 
 type ListSpotsQuery = {
     name?: string;
@@ -13,15 +14,14 @@ type ListSpotsQuery = {
     paginate?: boolean;
 };
 
-export class SpotService {
-    public constructor(
-        bearerToken: string
-    ) {
-        client.defaults.headers['Authorization'] = `Bearer ${bearerToken}`;
+export class SpotService extends ApiService {
+    public constructor() {
+        super();
+        this._setBearerTokenToHeaders();
     } 
 
     public async listSpots(query?: ListSpotsQuery): Promise<ApiResponse<Spot[]>> {
-        return await client.get('/spots', {
+        return await this.client.get('/spots', {
             params: {
                 paginate: false,
                 ...query
@@ -30,7 +30,7 @@ export class SpotService {
     }
 
     public async paginateSpots(query?: ListSpotsQuery): Promise<ApiResponse<Pagination<Spot>>> {
-        return await client.get('/spots', {
+        return await this.client.get('/spots', {
             params: {
                 paginate: true,
                 ...query

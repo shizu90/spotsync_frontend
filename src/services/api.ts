@@ -15,14 +15,37 @@ export interface Pagination<T> {
     has_next_page: boolean;
 }
 
-function _createInstance(): AxiosInstance {
-    return axios.create({
-        baseURL: `${import.meta.env.VITE_API_URL}/api/v1`,
-        timeout: 10000,
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
-}
+export class ClientBuilder {
+    private instance: AxiosInstance;
 
-export const client = _createInstance();
+    constructor() {
+        this.instance = this._createInstance();
+    }
+
+    public _createInstance(): AxiosInstance {
+        return axios.create({
+            baseURL: `${import.meta.env.VITE_API_URL}/api/v1`,
+            timeout: 1000,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+    }
+
+    public interceptError(errorCode: number, callback: () => void): ClientBuilder {
+        this.instance.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (error.response.status === errorCode) {
+                    callback();
+                }
+            } 
+        );
+
+        return this;
+    }
+
+    public build(): AxiosInstance {
+        return this.instance;
+    }
+}

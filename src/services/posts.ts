@@ -1,5 +1,6 @@
 import { Post, PostVisibility } from "@/types/posts";
-import { ApiResponse, client, Pagination } from "./api";
+import { ApiResponse, Pagination } from "./api";
+import { ApiService } from "./api-service";
 
 interface ListPostsQuery {
     group_id?: string;
@@ -19,21 +20,20 @@ interface CreatePostBody {
     group_id?: string;
 }
 
-export class PostService {
-    public constructor(
-        bearerToken: string
-    ) {
-        client.defaults.headers['Authorization'] = `Bearer ${bearerToken}`;
+export class PostService extends ApiService {
+    public constructor() {
+        super();
+        this._setBearerTokenToHeaders();
     }
 
     public async listPosts(query?: ListPostsQuery): Promise<ApiResponse<Post[] | Pagination<Post>>> {
-        return await client.get('/threads', {
+        return await this.client.get('/threads', {
             params: query ?? {}
         });
     }
 
     public async paginatePosts(query?: ListPostsQuery): Promise<ApiResponse<Pagination<Post>>> {
-        return await client.get('/threads', {
+        return await this.client.get('/threads', {
             params: {
                 paginate: true,
                 ...query
@@ -42,10 +42,12 @@ export class PostService {
     }
 
     public async getPost(id: string): Promise<ApiResponse<Post>> {
-        return await client.get(`/posts/${id}`);
+        return await this.client.get(`/posts/${id}`);
     }
 
     public async createPost(body: CreatePostBody): Promise<ApiResponse<Post>> {
-        return await client.post('/posts', body);
+        return await this.client.post('/posts', body);
     }
+
+    
 }

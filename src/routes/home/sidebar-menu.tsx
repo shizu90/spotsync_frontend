@@ -18,7 +18,7 @@ export function SidebarMenu() {
                     <DropdownMenuTrigger className="rounded-lg bg-primary text-background p-2">
                         <FaList/>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-background text-sm">
+                    <DropdownMenuContent align="end" className="bg-popover text-sm">
                         <Link 
                             to="#" 
                             className={clsx(
@@ -63,7 +63,7 @@ export function SidebarMenu() {
                 </DropdownMenu>
             </div>
         ) : (
-            <div className="flex flex-col gap-2 shadow-sm border border-foreground/10 rounded-lg text-sm p-2 h-fit">
+            <div className="bg-popover flex flex-col gap-2 shadow-sm border border-foreground/10 rounded-lg text-sm p-2 h-fit">
                 <Link 
                     to="#" 
                     className={clsx(

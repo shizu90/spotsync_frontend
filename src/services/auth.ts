@@ -1,5 +1,6 @@
 import { User } from "@/types/users";
-import { ApiResponse, client } from "./api";
+import { ApiResponse } from "./api";
+import { ApiService } from "./api-service";
 
 
 interface SignInBody {
@@ -14,8 +15,12 @@ export interface SignInResponse {
     bearer_token: string;
 }
 
-export class AuthService {
+export class AuthService extends ApiService {
+    public constructor() {
+        super();
+    }
+
     public async signIn(body: SignInBody): Promise<ApiResponse<SignInResponse>> {
-        return await client.post('/auth/login', body);
+        return await this.client.post('/auth/login', body);
     }
 }

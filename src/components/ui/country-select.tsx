@@ -17,7 +17,7 @@ export function CountrySelect(props: CountrySelectProps) {
         <SelectTrigger className={props.className}>
           <SelectValue placeholder={props.placeholder ? props.placeholder : "Select a country"}/>
         </SelectTrigger>
-        <SelectContent className="bg-background">
+        <SelectContent className="bg-popover">
             {
                 countryRegionData.countryTuples.map((c) => (
                     <SelectItem key={c[1]} value={c[1]}>

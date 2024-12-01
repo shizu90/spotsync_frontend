@@ -57,7 +57,7 @@ export function NavbarSearch() {
                                 <SelectTrigger className="w-52 border-none max-[1000px]:hidden shadow-none focus-visible:outline-offset-1">
                                     <SelectValue/>
                                 </SelectTrigger>
-                                <SelectContent className="border-none bg-background">
+                                <SelectContent className="border-none">
                                     <SelectGroup>
                                         {
                                             search_items.map((item, _) => (

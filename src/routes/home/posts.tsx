@@ -1,33 +1,19 @@
 import { Post } from "@/components/post/post";
 import { Spinner } from "@/components/ui/spinner";
-import { useAuthStore } from "@/hooks/auth-store";
 import { PostService } from "@/services/posts";
 import { Post as PostModel } from "@/types/posts";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import { useCallback, useMemo, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 export function Posts() {
-    const { auth, signOut } = useAuthStore();
-
-    if (!auth) return null;
-
-    const postService = new PostService(auth?.bearerToken);
+    const postService = new PostService();
 
     const observer = useRef<IntersectionObserver>();
     const {data, fetchNextPage, hasNextPage, isFetching, isLoading }  = useInfiniteQuery({
-        queryKey: ['posts'],
+        queryKey: ['home-posts'],
         queryFn: ({pageParam}) => {
-            const res = postService.paginatePosts({page: pageParam, limit: 6})
-                .then((res) => res)
-                .catch((err: AxiosError) => {
-                    if (err.response?.status === 403) {
-                        signOut();
-                    }
-                });
-
-            return res;
+            return postService.paginatePosts({page: pageParam, limit: 6});
         },
         getNextPageParam: (res) => {
             return res?.data.data.has_next_page ? res.data.data.current_page + 1 : undefined;

@@ -12,7 +12,7 @@ export function Navbar() {
     return (
         <header className={clsx(
             "top-0 z-10 h-12",
-            "bg-background text-foreground",
+            "bg-popover text-foreground",
             "border-b border-b-black border-opacity-10"
         )}>
             {signedIn ? (

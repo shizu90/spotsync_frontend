@@ -13,7 +13,7 @@ export function Spot(props: SpotProps) {
         <div className="p-2 m-2 border border-foreground/10 rounded-md shadow-sm flex flex-col gap-4">
             {
                 props.spot.photos.length > 0 ? (
-                    <img src={props.spot.photos[0].file_path} alt={props.spot.name} className="w-full h-32 object-cover rounded-lg"/>
+                    <img src={props.spot.photos[0].file_content} alt={props.spot.name} className="w-full h-32 object-cover rounded-lg"/>
                 ) : (
                     <div className="w-full h-32 rounded-lg flex justify-center items-center text-foreground/20">
                         <ImageOff/>

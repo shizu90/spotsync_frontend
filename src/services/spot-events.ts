@@ -1,5 +1,6 @@
 import { SpotEvent } from "@/types/spot-events";
-import { ApiResponse, client, Pagination } from "./api";
+import { ApiResponse, Pagination } from "./api";
+import { ApiService } from "./api-service";
 
 interface ListSpotEventsQuery {
     spot_id?: string;
@@ -14,18 +15,14 @@ interface ListSpotEventsQuery {
     paginate?: boolean;
 }
 
-export class SpotEventService {
-    private bearerToken: string;
-    
-    public constructor(bearerToken: string) {
-        this.bearerToken = bearerToken;
+export class SpotEventService extends ApiService {
+    public constructor() {
+        super();
+        this._setBearerTokenToHeaders();
     }
 
     public async paginateSpotEvents(query?: ListSpotEventsQuery): Promise<ApiResponse<Pagination<SpotEvent>>> {
-        const response = await client.get('/spot-events', {
-            headers: {
-                Authorization: `Bearer ${this.bearerToken}`
-            },
+        const response = await this.client.get('/spot-events', {
             params: {
                 paginate: true,
                 ...query

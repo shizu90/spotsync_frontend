@@ -4,13 +4,17 @@ import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { PostService } from "@/services/posts";
+import { Group } from "@/types/groups";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaFileAlt, FaRegSmile } from "react-icons/fa";
-import { FaPaperclip, FaRegImage, FaX } from "react-icons/fa6";
+import { FaRegImage, FaX } from "react-icons/fa6";
 import { z } from "zod";
+import { Spinner } from "../ui/spinner";
 
 const formSchema = z.object({
     content: z.string().min(1),
@@ -25,10 +29,37 @@ type UploadedFile = {
 
 const TOTAL_FILES_LIMIT = 5;
 
-export function CreatePost() {
-    const [selectedFiles, setSelectedFiles] = useState<UploadedFile[]>([]);
-    const { toast } = useToast();
+interface CreatePostProps {
+    group?: Group;
+    onCreated?: () => void;
+}
 
+export function CreatePost(props: CreatePostProps) {
+    const queryClient = useQueryClient();
+    
+    const createFn = async (data: any) => {
+        const service = new PostService();
+        return await service.createPost(data);
+    }
+
+    const { toast } = useToast();
+    const [selectedFiles, setSelectedFiles] = useState<UploadedFile[]>([]);
+    const { mutateAsync: createPostFn, isPending } = useMutation({
+        mutationFn: createFn,
+        onSuccess: () => {
+
+            queryClient.invalidateQueries({
+                queryKey: ['home-posts']
+            });
+        },
+        onError: (error) => {
+            toast({
+                title: "Failed to create post",
+                description: error.message,
+                variant: "destructive",
+            });
+        }
+    });
     const createPostForm = useForm<CreatePostFormValues>({
         defaultValues: {
             content: "",
@@ -61,12 +92,16 @@ export function CreatePost() {
     };
 
     const onSubmit = (data: CreatePostFormValues) => {
-        console.log(data);
+        createPostFn({
+            title: '',
+            content: data.content,
+            group_id: props.group?.id,
+        });
     };
 
     return (
         <Form {...createPostForm}>
-            <form className="bg-background w-full p-4 rounded-lg shadow-sm border border-foreground/10" onSubmit={
+            <form className="bg-popover w-full p-4 rounded-lg shadow-sm border border-foreground/10" onSubmit={
                 createPostForm.handleSubmit(onSubmit)
             }>
                 <div className="flex gap-4 h-fit w-full">
@@ -129,15 +164,6 @@ export function CreatePost() {
                 <div className="flex gap-4 items-center justify-between">
                     <div className="flex gap-2">
                         <div className="flex relative hover:text-secondary duration-100">
-                            <FaPaperclip className="text-md size-4"/>
-                            <Input
-                                type="file"
-                                multiple 
-                                onChange={(e) => updateSelectedFiles(e.target.files)}
-                                className="absolute inset-0 opacity-0 cursor-pointer"
-                            />
-                        </div>
-                        <div className="flex relative hover:text-secondary duration-100">
                             <div className="flex gap-2 items-center cursor-pointer">
                                 <FaRegImage className="text-md size-4"/>
                                 <span className="text-xs">Image</span>
@@ -159,8 +185,8 @@ export function CreatePost() {
                             </div>
                         </button>
                     </div>
-                    <Button className="focus-visible:outline-primary focus-visible:ring-0">
-                        Send
+                    <Button className="focus-visible:outline-primary focus-visible:ring-0" disabled={isPending || !createPostForm.watch('content')}>
+                        {isPending ? <Spinner/> : "Create"}
                     </Button>
                 </div>
             </form>

@@ -22,7 +22,7 @@ export function NavbarUser() {
                     <FaChevronDown className="size-4"/>
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="border-none w-52 bg-background" align="end">
+            <DropdownMenuContent className="border-none w-52" align="end">
                 <DropdownMenuGroup>
                     <DropdownMenuItem className="flex items-center justify-between">
                         <h3>Profile</h3>

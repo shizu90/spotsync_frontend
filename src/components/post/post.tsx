@@ -30,7 +30,7 @@ export function Post(props: PostProps) {
     };
 
     return (
-        <div className="bg-background border border-foreground/10 shadow-sm flex flex-col gap-4 p-4 rounded-lg">
+        <div className="bg-popover border border-foreground/10 shadow-sm flex flex-col gap-4 p-4 rounded-lg">
             <div className="flex gap-4">
                 {
                     post.group ? (

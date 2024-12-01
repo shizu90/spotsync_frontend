@@ -1,6 +1,5 @@
 import { SpotEvent } from "@/components/spot-events/spot-event";
 import { Spinner } from "@/components/ui/spinner";
-import { useAuthStore } from "@/hooks/auth-store";
 import { SpotEventService } from "@/services/spot-events";
 import { SpotEventStatus } from "@/types/spot-events";
 import { useQuery } from "@tanstack/react-query";
@@ -8,14 +7,9 @@ import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
 export function OnGoingSpotEvents() {
-    const { auth } = useAuthStore();
     const isMobile = useMediaQuery("(max-width: 1000px)");
 
-    if (!auth) {
-        return null;
-    }
-
-    const spotEventService = new SpotEventService(auth.bearerToken);
+    const spotEventService = new SpotEventService();
 
     const { data, isLoading } = useQuery({
         queryKey: ['on-going-spot-events'],
@@ -32,7 +26,7 @@ export function OnGoingSpotEvents() {
                     On-going spot events
                 </h1>
             </header>
-            <main className="h-fit border border-foreground/10 rounded-lg shadow-sm">
+            <main className="h-fit border border-foreground/10 rounded-lg shadow-sm bg-popover">
                 {
                     isLoading ? (
                         <Spinner/>

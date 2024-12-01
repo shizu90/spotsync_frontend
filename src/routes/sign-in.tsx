@@ -43,6 +43,9 @@ export function SignIn() {
     const authService = new AuthService();
     const { mutateAsync: signInFn, isPending } = useMutation({
         mutationFn: authService.signIn,
+        onSuccess: () => {
+            
+        }
     });
 
     useEffect(() => {
@@ -113,6 +116,7 @@ export function SignIn() {
 
             navigate("/");
         }).catch((err) => {
+            console.log(err);
             toast({
                 "title": "Error",
                 "description": err.response.data.message,
