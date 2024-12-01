@@ -40,12 +40,25 @@ export function SignIn() {
     const { signIn, signedIn } = useAuthStore();
     const { toast } = useToast();
     const navigate = useNavigate();
-    const authService = new AuthService();
-    const { mutateAsync: signInFn, isPending } = useMutation({
-        mutationFn: authService.signIn,
-        onSuccess: () => {
-            
+
+    const signInFn = async (data: SignInWithNameFormValues | SignInWithEmailFormValues) => {
+        const service = new AuthService();
+
+        if ("email" in data) {
+            return await service.signIn({
+                email: data.email,
+                password: data.password,
+            });
+        } else {
+            return await service.signIn({
+                name: data.name,
+                password: data.password,
+            });
         }
+    };
+
+    const { mutateAsync: signInMutate, isPending } = useMutation({
+        mutationFn: signInFn,
     });
 
     useEffect(() => {
@@ -73,10 +86,7 @@ export function SignIn() {
     });
 
     const signInWithEmail = async (values: SignInWithEmailFormValues) => {
-        signInFn({
-            email: values.email,
-            password: values.password,
-        }).then((res) => {
+        signInMutate(values).then((res) => {
             signIn({
                 bearerToken: res.data.data.bearer_token,
                 user: res.data.data.user,
@@ -99,10 +109,7 @@ export function SignIn() {
     };
 
     const signInWithName = async (values: SignInWithNameFormValues) => {
-        signInFn({
-            name: values.name,
-            password: values.password,
-        }).then((res) => {
+        signInMutate(values).then((res) => {
             signIn({
                 bearerToken: res.data.data.bearer_token,
                 user: res.data.data.user,
@@ -116,7 +123,6 @@ export function SignIn() {
 
             navigate("/");
         }).catch((err) => {
-            console.log(err);
             toast({
                 "title": "Error",
                 "description": err.response.data.message,

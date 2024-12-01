@@ -24,7 +24,7 @@ type CreatePostFormValues = z.infer<typeof formSchema>;
 
 type UploadedFile = {
     file: File;
-    type: 'document' | 'image';
+    type: 'video' | 'image';
 };
 
 const TOTAL_FILES_LIMIT = 5;
@@ -37,17 +37,20 @@ interface CreatePostProps {
 export function CreatePost(props: CreatePostProps) {
     const queryClient = useQueryClient();
     
-    const createFn = async (data: any) => {
+    const createPostFn = async (data: CreatePostFormValues) => {
         const service = new PostService();
-        return await service.createPost(data);
+        return await service.createPost({
+            title: '',
+            content: data.content,
+            group_id: props.group?.id,
+        });
     }
 
     const { toast } = useToast();
     const [selectedFiles, setSelectedFiles] = useState<UploadedFile[]>([]);
-    const { mutateAsync: createPostFn, isPending } = useMutation({
-        mutationFn: createFn,
+    const { mutateAsync: createPostMutate, isPending } = useMutation({
+        mutationFn: createPostFn,
         onSuccess: () => {
-
             queryClient.invalidateQueries({
                 queryKey: ['home-posts']
             });
@@ -60,6 +63,7 @@ export function CreatePost(props: CreatePostProps) {
             });
         }
     });
+
     const createPostForm = useForm<CreatePostFormValues>({
         defaultValues: {
             content: "",
@@ -73,7 +77,7 @@ export function CreatePost(props: CreatePostProps) {
                 ...selectedFiles,
                 ...Array.from(files).map(file => ({
                     file,
-                    type: file.type.includes('image') ? 'image' : 'document',
+                    type: file.type.includes('image') ? 'image' : 'video',
                 } as UploadedFile)),
             ];
 
@@ -92,11 +96,7 @@ export function CreatePost(props: CreatePostProps) {
     };
 
     const onSubmit = (data: CreatePostFormValues) => {
-        createPostFn({
-            title: '',
-            content: data.content,
-            group_id: props.group?.id,
-        });
+        createPostMutate(data);
     };
 
     return (

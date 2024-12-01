@@ -1,11 +1,16 @@
+import { useToast } from "@/hooks/use-toast";
 import { readableTime } from "@/lib/time";
+import { LikableSubject, LikeService } from "@/services/likes";
+import { PostService } from "@/services/posts";
 import { Post as PostModel } from "@/types/posts";
 import clsx from "clsx";
 import { useState } from "react";
 import { FaHeart, FaReply } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarImage } from "../ui/avatar";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { PostAttachment } from "./post-attachment";
+import { ReplyPost } from "./reply-post";
 
 interface PostProps {
     post: PostModel;
@@ -13,20 +18,42 @@ interface PostProps {
 
 export function Post(props: PostProps) {
     const [post, setPost] = useState<PostModel>(props.post);
+    const [isReplying, setIsReplying] = useState(false);
+    const { toast } = useToast();
     
-    const likePost = () => {
-        setPost({
-            ...post,
-            liked: !post.liked,
-            total_likes: post.liked ? post.total_likes - 1 : post.total_likes + 1
+    const refetchPost = () => {
+        const post = new PostService();
+
+        post.getPost(props.post.id).then((res) => {
+            setPost(res.data.data);
         });
     };
 
-    const replyPost = () => {
-        setPost({
-            ...post,
-            total_childrens: post.total_childrens + 1
-        });
+    const likePost = () => {
+        const service = new LikeService();
+
+        if (post.liked) {
+            service.unlike(LikableSubject.POST, post.id).then(() => {
+                refetchPost();
+            });
+        } else {
+            service.like({
+                subject: LikableSubject.POST,
+                subject_id: post.id,
+            }).then(() => {
+                refetchPost();
+            }).catch((err) => {
+                toast({
+                    title: 'Failed to like post',
+                    description: err.response.data.message,
+                    variant: 'destructive',
+                });
+            });
+        }
+    };
+
+    const onReplied = () => {
+        setIsReplying(false);
     };
 
     return (
@@ -75,10 +102,22 @@ export function Post(props: PostProps) {
                 </div>
             </div>
             <div className="flex gap-4 justify-end">
-                <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary" onClick={() => replyPost()}>
-                    <FaReply/>
-                    <span>{post.total_childrens} replies</span>
-                </button>
+                <Dialog open={isReplying} onOpenChange={() => {
+                    setIsReplying(!isReplying);
+                }}>
+                    <DialogTrigger asChild>
+                        <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary">
+                            <FaReply/>
+                            <span>{post.total_childrens} replies</span>
+                        </button>
+                    </DialogTrigger>
+                    <DialogContent className="">
+                        <DialogHeader>
+                            <DialogTitle>Reply to {post.creator.profile.display_name}'s post</DialogTitle>
+                        </DialogHeader>
+                        <ReplyPost parentPost={post} onReplied={onReplied}/>
+                    </DialogContent>
+                </Dialog>
                 <button className={clsx(
                     "flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary",
                     post.liked ? "text-secondary" : "text-foreground"
