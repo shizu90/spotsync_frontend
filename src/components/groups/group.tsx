@@ -1,5 +1,6 @@
 import { Group as GroupType } from "@/types/groups";
 import { FaUserGroup } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 interface GroupProps {
     group: GroupType;
@@ -19,9 +20,11 @@ export function Group(props: GroupProps) {
                     )
                 }
                 <div className="flex flex-col gap-1">
-                    <h1 className="text-xs font-medium text-foreground cursor-pointer hover:underline">
+                    <Link 
+                        to={`/groups/${props.group.id}`}
+                        className="text-xs font-medium text-foreground cursor-pointer hover:underline">
                         {props.group.name}
-                    </h1>
+                    </Link>
                     <p className="text-xs">
                         {props.group.about}
                     </p>

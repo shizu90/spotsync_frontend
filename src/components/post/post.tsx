@@ -54,50 +54,71 @@ export function Post(props: PostProps) {
 
     const onReplied = () => {
         setIsReplying(false);
+        setPost({
+            ...post,
+            total_childrens: post.total_childrens + 1,
+        });
     };
 
     return (
         <div className="bg-popover border border-foreground/10 shadow-sm flex flex-col gap-4 p-4 rounded-lg">
-            <div className="flex gap-4">
-                {
-                    post.group ? (
-                        <div className="flex flex-col relative w-10">
-                            <Avatar className="size-8">
-                                <AvatarImage src="src/assets/spotsync_icon.svg" />
-                            </Avatar>
-                            <Avatar className="size-6 absolute bottom-0 right-0">
-                                <AvatarImage src="src/assets/spotsync_icon.svg" />
-                            </Avatar>
-                        </div>
-                    ) : (
-                        <Avatar className="size-10">
-                            <AvatarImage src="src/assets/spotsync_icon.svg" />
-                        </Avatar>
-                    )
-                }
-                <div className="flex flex-col gap-[-2]">
+            <div className="w-ful flex justify-between">
+                <div className="flex gap-4">
                     {
                         post.group ? (
-                            <div className="flex gap-2 items-center">
-                                <Link to={`/users/${post.creator.id}`} className="font-bold text-md">{post.creator.profile.display_name}</Link>
-                                <Link to={`/groups/${post.group.id}`} className="text-xs text-muted-foreground">{post.group.name}</Link>
-                            </div>    
+                            <div className="flex flex-col relative w-10">
+                                <Avatar className="size-8">
+                                    <AvatarImage src="src/assets/spotsync_icon.svg" />
+                                </Avatar>
+                                <Avatar className="size-6 absolute bottom-0 right-0">
+                                    <AvatarImage src="src/assets/spotsync_icon.svg" />
+                                </Avatar>
+                            </div>
                         ) : (
-                            <Link to={`/users/${post.creator.id}`} className="font-bold text-md">{post.creator.profile.display_name}</Link>
+                            <Avatar className="size-10">
+                                <AvatarImage src="src/assets/spotsync_icon.svg" />
+                            </Avatar>
                         )
                     }
-                    <span className="text-xs text-muted-foreground">
-                        {readableTime(post.created_at)}
-                    </span>
+                    <div className="flex flex-col gap-[-2]">
+                        {
+                            post.group ? (
+                                <div className="flex gap-2 items-center">
+                                    <Link to={`/users/${post.creator.id}`} className="font-bold text-md hover:underline">{post.creator.profile.display_name}</Link>
+                                    <Link to={`/groups/${post.group.id}`} className="text-xs text-muted-foreground hover:underline">{post.group.name}</Link>
+                                </div>    
+                            ) : (
+                                <Link to={`/users/${post.creator.id}`} className="font-bold text-md hover:underline">{post.creator.profile.display_name}</Link>
+                            )
+                        }
+                        <span className="text-xs text-muted-foreground">
+                            {readableTime(post.created_at)}
+                        </span>
+                    </div>
                 </div>
+                {
+                    post.total_childrens > 0 && (
+                        <Link to={`/posts/${props.post.id}`} className="text-sm hover:underline hover:text-secondary">
+                            View thread
+                        </Link>
+                    )
+                }
             </div>
             <div>
                 <p className="text-sm">
                     {post.content}
                 </p>
-                <div className="flex gap-4 items-center">
+                <div className={clsx(
+                    "flex gap-4 items-center flex-wrap",
+                    post.attachments.length > 0 ? "mt-4" : ""
+                )}>
                     {
-                        post.attachments.map((attachment) => <PostAttachment attachment={attachment}/>)
+                        post.attachments.map((attachment) => (
+                            <PostAttachment 
+                                attachment={attachment}
+                                className="w-5/12 h-32"
+                            />
+                        ))
                     }
                 </div>
             </div>

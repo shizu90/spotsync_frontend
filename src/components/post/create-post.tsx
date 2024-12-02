@@ -163,7 +163,7 @@ export function CreatePost(props: CreatePostProps) {
                 </div>
                 <div className="flex gap-4 items-center justify-between">
                     <div className="flex gap-2">
-                        <div className="flex relative hover:text-secondary duration-100">
+                        <div className="flex relative hover:text-secondary focus:text-secondary duration-100">
                             <div className="flex gap-2 items-center cursor-pointer">
                                 <FaRegImage className="text-md size-4"/>
                                 <span className="text-xs">Image</span>
