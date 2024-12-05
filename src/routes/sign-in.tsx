@@ -132,22 +132,14 @@ export function SignIn() {
     };
 
     return (
-        <div className="w-[480px] mx-2 flex flex-col items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center gap-4 w-full max-w-md">
             <h1 className="font-bold text-2xl">Sign In</h1>
             <Tabs defaultValue="email" className="w-full mt-8">
                 <TabsList className="grid w-full grid-cols-2 bg-transparent">
-                    <TabsTrigger value="email" className={clsx(
-                        "border-b-transparent rounded-none border-b-2",
-                        "data-[state=active]:border-b-secondary", 
-                        "data-[state=active]:ring-0 data-[state=active]:shadow-none"
-                    )}>
+                    <TabsTrigger value="email">
                         Sign in with e-mail
                     </TabsTrigger>
-                    <TabsTrigger value="name" className={clsx(
-                        "border-b-transparent rounded-none border-b-2",
-                        "data-[state=active]:border-b-secondary", 
-                        "data-[state=active]:ring-0 data-[state=active]:shadow-none"
-                    )}>
+                    <TabsTrigger value="name">
                         Sign in with name
                     </TabsTrigger>
                 </TabsList>

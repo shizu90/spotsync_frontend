@@ -2,6 +2,7 @@ import { Spot } from "@/components/spots/spot";
 import { Spinner } from "@/components/ui/spinner";
 import { SpotService } from "@/services/spots";
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -22,11 +23,11 @@ export function ClosestSpots() {
     return !isMobile && (
         <article className="flex flex-col gap-4">
             <header>
-                <h1 className="font-medium text-md">
+                <h1 className="font-medium text-sm">
                     Spots near you
                 </h1>
             </header>
-            <main className="h-fit border border-foreground/10 rounded-lg shadow-sm bg-popover">
+            <main className="h-fit">
                 {
                     isLoading ? (
                         <Spinner/>
@@ -34,8 +35,10 @@ export function ClosestSpots() {
                         data && data.data.data.items.length > 0 ? (
                             <ul>
                                 {
-                                    data?.data.data.items.map((spot) => (
-                                        <li>
+                                    data?.data.data.items.map((spot, index) => (
+                                        <li className={clsx(
+                                            index !== 0 && 'mt-2'
+                                        )}>
                                             <Spot spot={spot} key={spot.id}/>
                                         </li>
                                     ))

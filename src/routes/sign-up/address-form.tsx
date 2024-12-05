@@ -96,7 +96,7 @@ export function AddressForm(props: AddressFormProps) {
     };
 
     return (
-        <div className="mx-2 flex flex-col justify-center gap-4">
+        <div className="flex flex-col justify-center gap-4">
             <h1 className="font-bold text-2xl">Address</h1>
             <p className="text-xs">
                 Your address is important for filtering points of interest near your area. 

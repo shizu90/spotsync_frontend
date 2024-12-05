@@ -1,17 +1,16 @@
-import { Post } from "@/components/post/post";
+import { Thread } from "@/components/post/thread";
 import { Spinner } from "@/components/ui/spinner";
 import { PostService } from "@/services/posts";
 import { Post as PostModel } from "@/types/posts";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useCallback, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-export function Posts() {
+export function Threads() {
     const postService = new PostService();
 
-    const observer = useRef<IntersectionObserver>();
-    const {data, fetchNextPage, hasNextPage, isFetching, isLoading }  = useInfiniteQuery({
-        queryKey: ['home-posts'],
+    const {data, fetchNextPage, hasNextPage }  = useInfiniteQuery({
+        queryKey: ['home-threads'],
         queryFn: ({pageParam}) => {
             return postService.paginatePosts({page: pageParam, limit: 6});
         },
@@ -21,27 +20,13 @@ export function Posts() {
         initialPageParam: 1
     });
 
-    const lastElementRef = useCallback((node: HTMLDivElement) => {
-        if (isLoading) return;
-
-        if (observer.current) observer.current.disconnect();
-
-        observer.current = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && hasNextPage && !isFetching) {
-                fetchNextPage();
-            }
-        });
-
-        if (node) observer.current.observe(node);
-    }, [isLoading, hasNextPage, isFetching, fetchNextPage]);
-
     const posts = useMemo(() => {
         return data?.pages.reduce((acc: PostModel[], page) => {
             return [...acc, ...page?.data.data.items || []];
         }, []);
     }, [data]);
 
-    return ( 
+    return (
         <InfiniteScroll 
             dataLength={posts?.length || 0}    
             next={fetchNextPage}
@@ -53,8 +38,8 @@ export function Posts() {
         >
             {
                 posts?.map((item) => (
-                    <div ref={lastElementRef} key={item.id} className="w-full">
-                        <Post post={item}/>
+                    <div key={item.id} className="w-full">
+                        <Thread post={item}/>
                     </div>
                 ))
             }

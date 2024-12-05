@@ -10,7 +10,12 @@ export interface SpotEventProps {
 
 export function SpotEvent(props: SpotEventProps) {
     return (
-        <div className="p-2 m-2 border border-foreground/10 rounded-md shadow-sm flex flex-col gap-4">
+        <Link
+            to={`/spot-events/${props.spotEvent.id}`} 
+            className={clsx(
+                "p-2 border border-foreground/10 rounded-md shadow-sm flex flex-col gap-4",
+                "bg-popover cursor-pointer"
+            )}>
             {
                 props.spotEvent.spot.photos.length > 0 ? (
                     <img src={props.spotEvent.spot.photos[0].file_path} alt={props.spotEvent.spot.name} className="w-full h-32 object-cover rounded-lg"/>
@@ -22,9 +27,9 @@ export function SpotEvent(props: SpotEventProps) {
             }
             <div className="flex flex-col gap-2">
                 <div className="flex gap-2 text-sm items-center">
-                    <Link to={`/spot-events/${props.spotEvent.id}`} className="font-medium hover:underline">
+                    <h1 className="font-medium">
                         {props.spotEvent.name}
-                    </Link>
+                    </h1>
                     <div className="flex items-center gap-2">
                         <div className={clsx(
                             "rounded-full w-2 h-2",
@@ -65,6 +70,6 @@ export function SpotEvent(props: SpotEventProps) {
                     {addressToString(props.spotEvent.spot.address)}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }

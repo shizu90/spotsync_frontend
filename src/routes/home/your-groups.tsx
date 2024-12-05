@@ -2,6 +2,7 @@ import { Group } from "@/components/groups/group";
 import { Spinner } from "@/components/ui/spinner";
 import { GroupService } from "@/services/groups";
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -19,11 +20,11 @@ export function YourGroups() {
     return !isMobile && (
         <article className="flex flex-col gap-4">
             <header>
-                <h1 className="font-medium text-md">
+                <h1 className="font-medium text-sm">
                     Your groups
                 </h1>
             </header>
-            <main className="h-fit border border-foreground/10 rounded-lg shadow-sm bg-popover">
+            <main className="h-fit">
                 {
                     isLoading ? (
                         <Spinner/>
@@ -31,8 +32,10 @@ export function YourGroups() {
                         data && data.data.data.items.length > 0 ? (
                             <ul>
                                 {
-                                    data?.data.data.items.map((group) => (
-                                        <li>
+                                    data?.data.data.items.map((group, index) => (
+                                        <li className={clsx(
+                                            index !== 0 && 'mt-2'
+                                        )}>
                                             <Group group={group} key={group.id}/>
                                         </li>
                                     ))

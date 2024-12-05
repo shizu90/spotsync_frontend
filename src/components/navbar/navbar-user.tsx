@@ -10,31 +10,31 @@ export function NavbarUser() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="focus:outline-primary">
+            <DropdownMenuTrigger className="h-fit focus:outline focus:bg-foreground/10 rounded-full">
                 <div className={clsx(
                     "rounded-lg",
                     "flex items-center justify-center gap-2 px-2 py-2"
                 )}>
                     <h3 className="text-sm">{auth?.user.profile.display_name}</h3>
-                    <Avatar className="size-6">
+                    <Avatar className="size-5">
                         <AvatarImage src="src/assets/spotsync_icon.svg" />
                     </Avatar>
-                    <FaChevronDown className="size-4"/>
+                    <FaChevronDown className="size-3"/>
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="border-none w-52" align="end">
                 <DropdownMenuGroup>
-                    <DropdownMenuItem className="flex items-center justify-between">
+                    <DropdownMenuItem className="flex items-center justify-between text-xs cursor-pointer">
                         <h3>Profile</h3>
                         <FaUser/>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="flex items-center justify-between">
+                    <DropdownMenuItem className="flex items-center justify-between text-xs cursor-pointer">
                         <h3>Settings</h3>
                         <FaGear/>
                     </DropdownMenuItem>
                     <DropdownMenuItem className={clsx(
                         "flex items-center justify-between",
-                        "focus:bg-red-500"
+                        "focus:bg-red-500 text-xs cursor-pointer"
                     )} onClick={() => signOut()}>
                         Logout
                         <FaSignOutAlt/>

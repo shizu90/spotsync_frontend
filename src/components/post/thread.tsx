@@ -12,13 +12,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { PostAttachment } from "./post-attachment";
 import { ReplyPost } from "./reply-post";
 
-interface PostProps {
+interface ThreadProps {
     post: PostModel;
 }
 
-export function Post(props: PostProps) {
+export function Thread(props: ThreadProps) {
     const [post, setPost] = useState<PostModel>(props.post);
-
     const [isReplying, setIsReplying] = useState(false);
     const { toast } = useToast();
     
@@ -77,7 +76,7 @@ export function Post(props: PostProps) {
                             </div>
                         ) : (
                             <Avatar className="size-10">
-                                <AvatarImage src="src/assets/spotsync_icon.svg" className="hover:opacity-5"/>
+                                <AvatarImage src="src/assets/spotsync_icon.svg" />
                             </Avatar>
                         )
                     }
@@ -133,7 +132,7 @@ export function Post(props: PostProps) {
                             <span>{post.total_childrens} replies</span>
                         </button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="">
                         <DialogHeader>
                             <DialogTitle>Reply to {post.creator.profile.display_name}'s post</DialogTitle>
                         </DialogHeader>

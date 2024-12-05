@@ -2,7 +2,7 @@ interface IconProps {
     className?: string;
 }
 
-export function Icon(props: IconProps) {
+export function SpotsyncIcon(props: IconProps) {
     return (
         <img
             src="src/assets/spotsync_icon.svg"

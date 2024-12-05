@@ -78,7 +78,7 @@ export function RegisterForm(props: RegisterFormProps) {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center mx-2 gap-4">
+        <div className="flex flex-col items-center justify-center gap-4">
             <h1 className="font-bold text-2xl">Sign Up</h1>
             <Form {...registerForm}>
                 <form className="flex flex-col gap-4 w-full" onSubmit={registerForm.handleSubmit(onSubmit)}>

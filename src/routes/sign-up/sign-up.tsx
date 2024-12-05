@@ -38,7 +38,7 @@ export function SignUp() {
     };
 
     return (
-        <div className="w-[480px]">
+        <div className="w-full max-w-md">
             {steps[currentStep]}
         </div>
     );

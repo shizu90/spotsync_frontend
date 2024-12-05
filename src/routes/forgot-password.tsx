@@ -51,7 +51,7 @@ export function ForgotPassword() {
     };
 
     return (
-        <div className="w-[480px] mx-2 flex flex-col items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center gap-4 w-full max-w-md">
             <h1 className="font-bold text-2xl">Forgot password</h1>
             <Form {...forgotPasswordForm}>
                 <form className={clsx("flex flex-col gap-4 w-full")} onSubmit={forgotPasswordForm.handleSubmit(onSubmit)}>

@@ -76,7 +76,7 @@ export function ResetPassword() {
         };
 
         return (
-            <div className="w-[480px] mx-2 flex flex-col items-center justify-center gap-4">
+            <div className="flex flex-col items-center justify-center gap-4 w-full max-w-md">
                 <h1 className="font-bold text-2xl">Reset password</h1>
                 <Form {...resetPasswordForm}>
                     <form className="flex flex-col gap-4 w-full" onSubmit={resetPasswordForm.handleSubmit(onSubmit)}>

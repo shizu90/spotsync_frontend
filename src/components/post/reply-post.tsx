@@ -100,7 +100,7 @@ export function ReplyPost(props: ReplyPostProps) {
 
     return (
         <div className="flex flex-col gap-4 justify-center">
-            <div className="flex gap-4 rounded-lg p-4 hover:bg-popover cursor-pointer hover:shadow-sm border border-transparent hover:border-foreground/10">
+            <div className="flex gap-4 rounded-lg mt-4">
                 <Avatar className="size-6">
                     <AvatarImage src="src/assets/spotsync_icon.svg" />
                 </Avatar>

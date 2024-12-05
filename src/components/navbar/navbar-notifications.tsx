@@ -48,8 +48,8 @@ const notifications = [
 export function NavbarNotifications() {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="px-2 focus:outline-primary">
-                <FaBell className="size-5"/>
+            <DropdownMenuTrigger className="focus:outline rounded-full focus:bg-foreground/10 p-1 h-fit">
+                <FaBell className="size-4"/>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="border-none w-72" align="end">
                 <DropdownMenuGroup>

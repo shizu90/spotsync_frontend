@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from './app.tsx';
 import { ForgotPassword } from './routes/forgot-password.tsx';
 import { Home } from './routes/home/home.tsx';
+import { PostDetail } from './routes/posts/post-detail.tsx';
 import { PrivateRoute } from './routes/private.tsx';
 import { ResetPassword } from './routes/reset-password.tsx';
 import { SignIn } from './routes/sign-in.tsx';
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />}>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />}/>
+            <Route path="/posts/:postId" element={<PostDetail />}/>
           </Route>
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />

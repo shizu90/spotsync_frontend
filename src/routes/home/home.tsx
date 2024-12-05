@@ -1,25 +1,52 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Sidebar } from "@/routes/home/sidebar";
+import clsx from "clsx";
 import { CreatePost } from "../../components/post/create-post";
 import { ClosestSpots } from "./closest-spots";
 import { OnGoingSpotEvents } from "./on-going-spot-events";
-import { Posts } from "./posts";
-import { SidebarMenu } from "./sidebar-menu";
+import { Threads } from "./threads";
 import { YourGroups } from "./your-groups";
 
 export function Home() {
     return (
-        <div className="w-3/5 max-[1000px]:w-full max-[1000px]:mx-4 flex flex-col gap-8">
-            <div className="w-full flex justify-between gap-8 max-[1000px]:justify-center max-[1000px]:gap-0">
-                <div className="grow flex flex-col gap-8">
-                    <SidebarMenu/>
-                    <YourGroups/>
-                    <ClosestSpots/>
-                    <OnGoingSpotEvents/>
-                </div>
-                <div className="w-3/5 max-[1000px]:w-full">
-                    <CreatePost/>
-                    <hr className="border-foreground/10 mt-4 mb-8"/>
-                    <Posts/>
-                </div>
+        <div className="flex justify-between gap-4">
+            <div className={clsx(
+                "hidden md:flex flex-col gap-4 md:w-1/4",
+                "md:"
+            )}>
+                <Sidebar/>
+                <YourGroups/>
+            </div>
+            <div className="md:w-3/6 overflow-hidden">
+                <CreatePost/>
+                <hr className="border-foreground/10 mt-4 mb-8"/>
+                <h3 className="mb-4 font-medium text-sm">
+                    Recent Activity
+                </h3>
+                <Tabs defaultValue="all">
+                    <TabsList>
+                        <TabsTrigger value="all">
+                            All
+                        </TabsTrigger>
+                        <TabsTrigger value="following">
+                            Following
+                        </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="all">
+                        <Threads/>
+                    </TabsContent>
+                    <TabsContent value="following">
+                        <Threads/>
+                    </TabsContent>
+                </Tabs>
+            </div>
+            <div className={
+                clsx(
+                    "hidden md:flex flex-col gap-4 w-1/4"
+                )
+            }>
+                <ClosestSpots/>
+                <OnGoingSpotEvents/>
             </div>
         </div>
     );

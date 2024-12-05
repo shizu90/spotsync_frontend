@@ -3,6 +3,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { SpotEventService } from "@/services/spot-events";
 import { SpotEventStatus } from "@/types/spot-events";
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -22,11 +23,11 @@ export function OnGoingSpotEvents() {
     return !isMobile && (
         <article className="flex flex-col gap-4">
             <header>
-                <h1 className="font-medium text-md">
+                <h1 className="font-medium text-sm">
                     On-going spot events
                 </h1>
             </header>
-            <main className="h-fit border border-foreground/10 rounded-lg shadow-sm bg-popover">
+            <main className="h-fit">
                 {
                     isLoading ? (
                         <Spinner/>
@@ -34,8 +35,10 @@ export function OnGoingSpotEvents() {
                         data && data.data.data.items.length > 0 ? (
                                 <ul>
                                     {
-                                        data?.data.data.items.map((spotEvent) => (
-                                            <li>
+                                        data?.data.data.items.map((spotEvent, index) => (
+                                            <li className={clsx(
+                                                index !== 0 && 'mt-2'
+                                            )}>
                                                 <SpotEvent spotEvent={spotEvent} key={spotEvent.id}/>
                                             </li>
                                         ))

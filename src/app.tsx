@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet } from "react-router-dom";
 import { Footer } from "./components/footer/footer";
+import { Container } from "./components/layout/container";
+import { MainContent } from "./components/layout/main-content";
 import { Navbar } from "./components/navbar/navbar";
 import { Toaster } from "./components/ui/toaster";
 
@@ -11,8 +13,12 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div>
         <Navbar />
-        <main className="flex items-center justify-center mt-20">
-          <Outlet />
+        <main className="flex items-center justify-center mt-32">
+          <Container>
+            <MainContent>
+              <Outlet />
+            </MainContent>
+          </Container>
         </main>
         <Footer />
         <Toaster/>
