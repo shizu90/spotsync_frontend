@@ -14,6 +14,10 @@ import { ReplyPost } from "./reply-post";
 
 interface PostProps {
     post: PostModel;
+    className?: string;
+    showReply?: boolean;
+    showLike?: boolean;
+    showAttachments?: boolean;
 }
 
 export function Post(props: PostProps) {
@@ -62,8 +66,11 @@ export function Post(props: PostProps) {
     };
 
     return (
-        <div className="bg-popover border border-foreground/10 shadow-sm flex flex-col gap-4 p-4 rounded-lg">
-            <div className="w-ful flex justify-between">
+        <div className={clsx(
+            "bg-popover border border-foreground/10 shadow-sm flex flex-col gap-4 p-4 rounded-lg",
+            props.className
+        )}>
+            <header className="w-ful flex justify-between">
                 <div className="flex gap-4">
                     {
                         post.group ? (
@@ -104,8 +111,8 @@ export function Post(props: PostProps) {
                         </Link>
                     )
                 }
-            </div>
-            <div>
+            </header>
+            <main>
                 <p className="text-sm">
                     {post.content}
                 </p>
@@ -117,37 +124,41 @@ export function Post(props: PostProps) {
                         post.attachments.map((attachment) => (
                             <PostAttachment 
                                 attachment={attachment}
-                                className="w-5/12 h-32"
+                                className="w-full h-full"
                             />
                         ))
                     }
                 </div>
-            </div>
-            <div className="flex gap-4 justify-end">
-                <Dialog open={isReplying} onOpenChange={() => {
-                    setIsReplying(!isReplying);
-                }}>
-                    <DialogTrigger asChild>
-                        <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary">
-                            <FaReply/>
-                            <span>{post.total_childrens} replies</span>
-                        </button>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Reply to {post.creator.profile.display_name}'s post</DialogTitle>
-                        </DialogHeader>
-                        <ReplyPost parentPost={post} onReplied={onReplied}/>
-                    </DialogContent>
-                </Dialog>
-                <button className={clsx(
-                    "flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary",
-                    post.liked ? "text-secondary" : "text-foreground"
-                )} onClick={() => likePost()}>
-                    <FaHeart/>
-                    <span>{post.total_likes} likes</span>
-                </button>
-            </div>
+            </main>
+            <footer className="flex gap-4 justify-end">
+                {props.showReply && (
+                    <Dialog open={isReplying} onOpenChange={() => {
+                        setIsReplying(!isReplying);
+                    }}>
+                        <DialogTrigger asChild>
+                            <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary">
+                                <FaReply/>
+                                <span>{post.total_childrens} replies</span>
+                            </button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Reply to {post.creator.profile.display_name}'s post</DialogTitle>
+                            </DialogHeader>
+                            <ReplyPost parentPost={post} onReplied={onReplied}/>
+                        </DialogContent>
+                    </Dialog>
+                )}
+                {props.showLike && (
+                    <button className={clsx(
+                        "flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary",
+                        post.liked ? "text-secondary" : "text-foreground"
+                    )} onClick={() => likePost()}>
+                        <FaHeart/>
+                        <span>{post.total_likes} likes</span>
+                    </button>
+                )}
+            </footer>
         </div>
     );
 }

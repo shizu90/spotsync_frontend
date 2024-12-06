@@ -13,7 +13,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div>
         <Navbar />
-        <main className="flex items-center justify-center mt-32">
+        <main className="flex items-center justify-center mt-20">
           <Container>
             <MainContent>
               <Outlet />

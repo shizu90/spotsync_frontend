@@ -43,17 +43,30 @@ export function CreatePost(props: CreatePostProps) {
             title: '',
             content: data.content,
             group_id: props.group?.id,
+            attachments: selectedFiles.map((file) => file.file),
         });
     }
 
     const { toast } = useToast();
     const [selectedFiles, setSelectedFiles] = useState<UploadedFile[]>([]);
+    
+    const createPostForm = useForm<CreatePostFormValues>({
+        defaultValues: {
+            content: "",
+        },
+        resolver: zodResolver(formSchema),
+    });
+
     const { mutateAsync: createPostMutate, isPending } = useMutation({
         mutationFn: createPostFn,
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['home-posts']
+                queryKey: ['home-threads']
             });
+
+            createPostForm.reset();
+
+            setSelectedFiles([]);
         },
         onError: (error) => {
             toast({
@@ -62,13 +75,6 @@ export function CreatePost(props: CreatePostProps) {
                 variant: "destructive",
             });
         }
-    });
-
-    const createPostForm = useForm<CreatePostFormValues>({
-        defaultValues: {
-            content: "",
-        },
-        resolver: zodResolver(formSchema),
     });
 
     const updateSelectedFiles = (files: FileList | null) => {

@@ -11,13 +11,12 @@ export function Home() {
     return (
         <div className="flex justify-between gap-4">
             <div className={clsx(
-                "hidden md:flex flex-col gap-4 md:w-1/4",
-                "md:"
+                "hidden md:flex flex-col gap-4 md:w-60",
             )}>
                 <Sidebar/>
                 <YourGroups/>
             </div>
-            <div className="md:w-3/6 overflow-hidden">
+            <div className="md:w-3/4 overflow-hidden">
                 <CreatePost/>
                 <hr className="border-foreground/10 mt-4 mb-8"/>
                 <h3 className="mb-4 font-medium text-sm">
@@ -42,7 +41,7 @@ export function Home() {
             </div>
             <div className={
                 clsx(
-                    "hidden md:flex flex-col gap-4 w-1/4"
+                    "hidden md:flex flex-col gap-4 w-96",
                 )
             }>
                 <ClosestSpots/>

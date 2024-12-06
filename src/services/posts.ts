@@ -18,6 +18,7 @@ interface CreatePostBody {
     visibility?: PostVisibility;
     parent_id?: string;
     group_id?: string;
+    attachments?: File[];
 }
 
 export class PostService extends ApiService {
@@ -46,7 +47,17 @@ export class PostService extends ApiService {
     }
 
     public async createPost(body: CreatePostBody): Promise<ApiResponse<Post>> {
-        return await this.client.post('/posts', body);
+        const formData = new FormData();
+
+        formData.append('title', body.title);
+        formData.append('content', body.content);
+        for (const attachment of body.attachments ?? []) {
+            formData.append('attachments', attachment);
+        }
+
+        this.client.defaults.headers['Content-Type'] = 'multipart/form-data';
+
+        return await this.client.post('/posts', formData);
     }
 
     

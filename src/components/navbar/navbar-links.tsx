@@ -1,23 +1,42 @@
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 
-export function NavbarLinks() {
+interface NavbarLinksProps {
+    className?: string;
+    orientation?: 'horizontal' | 'vertical';
+    linkClassName?: string;
+}
+
+export function NavbarLinks(props: NavbarLinksProps) {
     return (
-        <div className="flex items-center gap-4">
+        <div className={clsx(
+            `flex ${props.orientation == 'vertical' && 'flex-col'} gap-4`,
+            props.className,
+        )}>
             <Link
                 to={'/spots'}
-                className="text-xs text-foreground/80 hover:text-foreground"
+                className={clsx(
+                    "text-xs text-foreground/80 hover:text-foreground",
+                    props.linkClassName
+                )}
             >
                 Spots
             </Link>
             <Link
                 to={'/groups'}
-                className="text-xs text-foreground/80 hover:text-foreground"
+                className={clsx(
+                    "text-xs text-foreground/80 hover:text-foreground",
+                    props.linkClassName
+                )}
             >
                 Groups
             </Link>
             <Link
                 to={'/groups'}
-                className="text-xs text-foreground/80 hover:text-foreground"
+                className={clsx(
+                    "text-xs text-foreground/80 hover:text-foreground",
+                    props.linkClassName
+                )}
             >
                 Events
             </Link>
