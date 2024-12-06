@@ -47,9 +47,37 @@ export type AddressFormValues = z.infer<typeof formSchema>;
 
 export function AddressForm(props: AddressFormProps) {
     const { toast } = useToast();
-    const userService = new UserService();
+
+    const createUserFn = async (data: SignUpData) => {
+        const service = new UserService();
+
+        let hasAddress = (data.address.country && data.address.state && data.address.city);
+
+        return await service.createUser({
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            birth_date: data.birthDate,
+            address: hasAddress ? {
+                area: data.address.state,
+                sub_area: data.address.city,
+                country_code: data.address.country,
+                locality: data.address.neighborhood
+            } : undefined
+        }).then((_) => {
+            props.next();
+        }).catch((err) => {
+            props.prev();
+            toast({
+                "title": "Error",
+                "description": err.response.data.message,
+                "variant": 'destructive',
+            });
+        });
+    };
+
     const { mutateAsync: createUser, isPending } = useMutation({
-        mutationFn: userService.createUser,
+        mutationFn: createUserFn,
     });
 
     const addressForm = useForm<AddressFormValues>({
@@ -70,29 +98,7 @@ export function AddressForm(props: AddressFormProps) {
     const onSubmit = (data: AddressFormValues) => {
         props.setSignUpData(data);
 
-        let hasAddress = (data.country && data.state && data.city);
-
-        createUser({
-            name: props.signUpData.name,
-            email: props.signUpData.email,
-            password: props.signUpData.password,
-            birth_date: props.signUpData.birthDate,
-            address: hasAddress ? {
-                area: data.state,
-                sub_area: data.city,
-                country_code: data.country,
-                locality: data.neighborhood
-            } : undefined
-        }).then((_) => {
-            props.next();
-        }).catch((err) => {
-            props.prev();
-            toast({
-                "title": "Error",
-                "description": err.response.data.message,
-                "variant": 'destructive',
-            });
-        });
+        createUser(props.signUpData);
     };
 
     return (
