@@ -4,6 +4,7 @@ import { ClientBuilder } from "./api";
 
 export abstract class ApiService {
     protected client: AxiosInstance;
+    protected apiUrl: string = `${import.meta.env.VITE_API_URL}/api/v1`;
 
     constructor() {
         this.client = new ClientBuilder().interceptError(403, () => {

@@ -122,7 +122,8 @@ export function Post(props: PostProps) {
                 )}>
                     {
                         post.attachments.map((attachment) => (
-                            <PostAttachment 
+                            <PostAttachment
+                                postId={props.post.id}
                                 attachment={attachment}
                                 className="w-full h-full"
                             />

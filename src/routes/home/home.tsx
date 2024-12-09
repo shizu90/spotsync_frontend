@@ -9,7 +9,7 @@ import { YourGroups } from "./your-groups";
 
 export function Home() {
     return (
-        <div className="flex justify-between gap-4">
+        <div className="flex justify-between gap-4 w-full">
             <div className={clsx(
                 "hidden md:flex flex-col gap-4 md:w-60",
             )}>
@@ -41,7 +41,7 @@ export function Home() {
             </div>
             <div className={
                 clsx(
-                    "hidden md:flex flex-col gap-4 w-96",
+                    "hidden md:flex flex-col gap-4 md:min-w-80",
                 )
             }>
                 <ClosestSpots/>

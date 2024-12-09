@@ -60,5 +60,12 @@ export class PostService extends ApiService {
         return await this.client.post('/posts', formData);
     }
 
-    
+    public async getAttachment(postId: string, attachmentId: string) {
+        return await this.client.get(
+            `${this.apiUrl}/posts/${postId}/attachments/${attachmentId}`,
+            {
+                responseType: 'blob',
+            }
+        ); 
+    }
 }

@@ -17,8 +17,8 @@ export function SpotEvent(props: SpotEventProps) {
                 "bg-popover cursor-pointer"
             )}>
             {
-                props.spotEvent.spot.photos.length > 0 ? (
-                    <img src={props.spotEvent.spot.photos[0].file_path} alt={props.spotEvent.spot.name} className="w-full h-32 object-cover rounded-lg"/>
+                props.spotEvent.spot.attachments.length > 0 ? (
+                    <img src={props.spotEvent.spot.attachments[0].file_path} alt={props.spotEvent.spot.name} className="w-full h-32 object-cover rounded-lg"/>
                 ) : (
                     <div className="w-full h-32 rounded-lg flex justify-center items-center text-foreground/20">
                         <ImageOff/>

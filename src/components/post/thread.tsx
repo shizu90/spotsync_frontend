@@ -114,7 +114,8 @@ export function Thread(props: ThreadProps) {
                 )}>
                     {
                         post.attachments.map((attachment) => (
-                            <PostAttachment 
+                            <PostAttachment
+                                postId={props.post.id}
                                 attachment={attachment}
                                 className="w-5/12 h-32"
                             />

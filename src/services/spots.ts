@@ -37,4 +37,10 @@ export class SpotService extends ApiService {
             }
         });
     }
+
+    public async getAttachment(spotId: string, attachmentId: string) {
+        return await this.client.get(`/spots/${spotId}/attachments/${attachmentId}`, {
+            responseType: 'blob'
+        });
+    }
 }

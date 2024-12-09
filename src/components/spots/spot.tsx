@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { ImageOff } from "lucide-react";
 import { FaStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { SpotAttachment } from "./spot-attachment";
 
 interface SpotProps {
     spot: SpotType;
@@ -18,8 +19,11 @@ export function Spot(props: SpotProps) {
                 "bg-popover cursor-pointer"
             )}>
             {
-                props.spot.photos.length > 0 ? (
-                    <img src={props.spot.photos[0].file_content} alt={props.spot.name} className="w-full h-32 object-cover rounded-lg"/>
+                props.spot.attachments.length > 0 ? (
+                    <SpotAttachment 
+                        className="max-h-32 w-full"
+                        spotId={props.spot.id} 
+                        attachment={props.spot.attachments[0]}/>
                 ) : (
                     <div className="w-full h-32 rounded-lg flex justify-center items-center text-foreground/20">
                         <ImageOff/>

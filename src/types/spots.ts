@@ -1,9 +1,8 @@
 import { User } from "./users";
 
-export type SpotPhoto = {
+export type SpotAttachment = {
     id: string;
     file_path: string;
-    file_content: string;
     file_type: string;
 }
 
@@ -24,7 +23,7 @@ export type Spot = {
         street_number?: string;
         postal_code?: string;
     };
-    photos: SpotPhoto[];
+    attachments: SpotAttachment[];
     creator: User;
     distance?: number;
     visited?: boolean;
