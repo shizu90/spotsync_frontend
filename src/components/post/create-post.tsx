@@ -110,18 +110,19 @@ export function CreatePost(props: CreatePostProps) {
                     </div>
                     <div className="flex gap-4 items-center justify-between">
                         <div className="flex gap-2">
-                            <div className="flex relative hover:text-secondary focus:text-secondary duration-100">
-                                <UploadFile
-                                    accept="image/*,video/*"
-                                    className="cursor-pointer"
-                                >
-                                    <div className="flex gap-2 items-center cursor-pointer">
-                                        <FaRegImage className="text-md size-4"/>
-                                        <span className="text-xs">Image</span>
-                                    </div>
-                                </UploadFile>
-                            </div>
-                            <button className="outline-none text-foreground focus:text-secondary duration-100 hover:text-secondary">
+                            <UploadFile
+                                accept="image/*,video/*"
+                                className="cursor-pointer"
+                            >
+                                <div className="flex gap-2 items-center cursor-pointer">
+                                    <FaRegImage className="text-md size-4"/>
+                                    <span className="text-xs">Image</span>
+                                </div>
+                            </UploadFile>
+                            <button 
+                                className="outline-none text-foreground focus:text-secondary duration-100 hover:text-secondary"
+                                type="button"
+                            >
                                 <div className="flex gap-2 items-center cursor-pointer">
                                     <FaRegSmile className="text-md size-4"/>
                                     <span className="text-xs">

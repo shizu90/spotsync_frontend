@@ -35,7 +35,7 @@ export function YourGroups() {
                                     data?.data.data.items.map((group, index) => (
                                         <li className={clsx(
                                             index !== 0 && 'mt-2'
-                                        )}>
+                                        )} key={group.id}>
                                             <Group group={group} key={group.id}/>
                                         </li>
                                     ))

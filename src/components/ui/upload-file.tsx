@@ -19,7 +19,7 @@ export class UploadedFile {
 const UploadFileContext = React.createContext({
     selectedFiles: [] as UploadedFile[],
     maxFiles: 5,
-    setSelectedFiles: (files: UploadedFile[]) => {},
+    setSelectedFiles: (_: UploadedFile[]) => {},
 });
 
 interface UploadedFilesProps {
@@ -60,7 +60,10 @@ export function UploadedFiles(props: UploadedFilesProps) {
                                                     <FaX className="size-2"/>
                                                 </span>
                                             </DialogTrigger>
-                                            <DialogContent className="p-0 border-0 shadow-none rounded-lg">
+                                            <DialogContent 
+                                                className="p-0 border-0 shadow-none rounded-lg"
+                                                aria-describedby={undefined}
+                                            >
                                                 <img
                                                     src={URL.createObjectURL(file.file)}
                                                     alt={file.file.name}
@@ -82,7 +85,10 @@ export function UploadedFiles(props: UploadedFilesProps) {
                                                     <FaX className="size-2"/>
                                                 </span>
                                             </DialogTrigger>
-                                            <DialogContent className="p-0 border-0 shadow-none rounded-lg">
+                                            <DialogContent 
+                                                className="p-0 border-0 shadow-none rounded-lg"
+                                                aria-describedby={undefined}
+                                            >
                                                 <video
                                                     src={URL.createObjectURL(file.file)}
                                                     className="w-full h-full object-cover rounded-lg"
@@ -127,8 +133,6 @@ export function UploadFile(
     const { toast } = useToast();
 
     const updateSelectedFiles = (files: FileList | null) => {
-        console.log(files);
-        
         if (files) {
             let updateArr = [
                 ...selectedFiles,
@@ -147,8 +151,6 @@ export function UploadFile(
                 
                 updateArr = updateArr.slice(0, maxFiles);
             }
-
-            console.log(updateArr);
 
             setSelectedFiles(updateArr);
         }

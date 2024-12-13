@@ -118,6 +118,7 @@ export function Thread(props: ThreadProps) {
                                 postId={props.post.id}
                                 attachment={attachment}
                                 className="w-5/12 h-32"
+                                key={attachment.id}
                             />
                         ))
                     }

@@ -38,7 +38,7 @@ export function OnGoingSpotEvents() {
                                         data?.data.data.items.map((spotEvent, index) => (
                                             <li className={clsx(
                                                 index !== 0 && 'mt-2'
-                                            )}>
+                                            )} key={spotEvent.id}>
                                                 <SpotEvent spotEvent={spotEvent} key={spotEvent.id}/>
                                             </li>
                                         ))

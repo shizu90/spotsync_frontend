@@ -4,6 +4,7 @@ export type SpotAttachment = {
     id: string;
     file_path: string;
     file_type: string;
+    url: string;
 }
 
 export type Spot = {

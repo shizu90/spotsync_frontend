@@ -5,7 +5,7 @@ export type PostAttachment = {
     id: string;
     file_type: string;
     file_path: string;
-    file_content: string;
+    url: string;
 }
 
 export enum PostVisibility {

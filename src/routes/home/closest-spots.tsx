@@ -38,7 +38,7 @@ export function ClosestSpots() {
                                     data?.data.data.items.map((spot, index) => (
                                         <li className={clsx(
                                             index !== 0 && 'mt-2'
-                                        )}>
+                                        )} key={spot.id}>
                                             <Spot spot={spot} key={spot.id}/>
                                         </li>
                                     ))
