@@ -38,6 +38,9 @@ export function ReplyPost(props: ReplyPostProps) {
             content: data.content,
             group_id: props.parentPost.group?.id,
             parent_id: props.parentPost.id,
+            attachments: selectedFiles.map((file) => file.file),
+        }).then(() => {
+            if(props.onReplied) props.onReplied();
         });
     };
 
@@ -64,9 +67,6 @@ export function ReplyPost(props: ReplyPostProps) {
 
     const onSubmit = (data: ReplyPostFormValues) => {
         replyPostMutate(data);
-        if (props.onReplied) {
-            props.onReplied();
-        }
     };
 
     return (

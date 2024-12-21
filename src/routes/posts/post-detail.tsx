@@ -30,11 +30,21 @@ export function PostDetail() {
 
                             <hr className="my-4 border-foreground/10"/>
 
-                            {
-                                data.data.data.children_posts.map((post) => (
-                                    <Thread post={post} key={post.id} shouldNavigate={true} showReplyingTo={false}/>
-                                ))
-                            }
+                            <div
+                                className="flex flex-col gap-4"
+                            >
+                                {
+                                    data.data.data.children_posts.length > 0 ? 
+                                        data.data.data.children_posts.map((post) => (
+                                            <Thread post={post} key={post.id} shouldNavigate={true} showReplyingTo={false}/>
+                                        ))
+                                    : (
+                                        <div className="text-center text-foreground text-xs">
+                                            No replies yet
+                                        </div>
+                                    )
+                                }
+                            </div>
                         </div>
                     ) : (
                         <div className="text-center text-foreground text-xs">

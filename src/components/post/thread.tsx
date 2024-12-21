@@ -62,6 +62,8 @@ export function Thread(props: ThreadProps) {
             ...post,
             total_childrens: post.total_childrens + 1,
         });
+
+        navigate(`/posts/${post.id}`);
     };
 
     return (
@@ -88,7 +90,7 @@ export function Thread(props: ThreadProps) {
                 <div className="flex gap-4">
                     {
                         post.group ? (
-                            <div className="flex flex-col relative w-10">
+                            <div className="flex flex-col relative w-10 caret-transparent">
                                 <Link
                                     to={`/groups/${props.post.group?.id}`}
                                 >
@@ -110,17 +112,17 @@ export function Thread(props: ThreadProps) {
                             >
                                 {
                                 props.post.creator.profile.profile_picture ? (
-                                    <Avatar className="size-10">
+                                    <Avatar className="size-10 caret-transparent">
                                         <AvatarImage src={props.post.creator.profile.profile_picture} className="hover:opacity-90"/>
                                     </Avatar>
                                 ) : (
-                                    <DefaultUserIcon className="p-2"/>
+                                    <DefaultUserIcon className="p-2 caret-transparent"/>
                                 )
                                 }
                             </Link>
                         )
                     }
-                    <div className="flex flex-col gap-[-2]">
+                    <div className="flex flex-col gap-[-2] caret-transparent">
                         {
                             post.group ? (
                                 <div className="flex gap-2 items-center">
