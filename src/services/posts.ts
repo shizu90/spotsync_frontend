@@ -49,8 +49,17 @@ export class PostService extends ApiService {
     public async createPost(body: CreatePostBody): Promise<ApiResponse<Post>> {
         const formData = new FormData();
 
+        console.log(body);
         formData.append('title', body.title);
         formData.append('content', body.content);
+        if (body.parent_id) {
+            formData.append('parent_id', body.parent_id);
+        }
+
+        if (body.group_id) {
+            formData.append('group_id', body.group_id);
+        }
+
         for (const attachment of body.attachments ?? []) {
             formData.append('attachments', attachment);
         }

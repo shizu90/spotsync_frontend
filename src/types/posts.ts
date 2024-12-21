@@ -25,7 +25,8 @@ export type Post = {
     thread_id: string;
     created_at: string;
     updated_at: string;
-    parent_id: string;
+    parent?: Post;
+    parent_id?: string;
     group?: Group;
     children_posts: Post[];
     total_childrens: number;

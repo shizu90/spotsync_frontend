@@ -16,7 +16,7 @@ export function Home() {
                 <Sidebar/>
                 <YourGroups/>
             </div>
-            <div className="md:w-3/4 overflow-hidden">
+            <div className="md:w-3/4 overflow-hidden w-full">
                 <CreatePost/>
                 <hr className="border-foreground/10 mt-4 mb-8"/>
                 <h3 className="mb-4 font-medium text-sm">

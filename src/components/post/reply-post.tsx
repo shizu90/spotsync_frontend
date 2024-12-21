@@ -6,9 +6,9 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaRegSmile } from "react-icons/fa";
 import { FaRegImage } from "react-icons/fa6";
 import { z } from "zod";
+import { DefaultUserIcon } from "../icon/default-user-icon";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Form, FormField, FormItem } from "../ui/form";
@@ -28,6 +28,8 @@ interface ReplyPostProps {
 }
 
 export function ReplyPost(props: ReplyPostProps) {
+    console.log(props.parentPost);
+
     const replyPostFn = async (data: ReplyPostFormValues) => {
         const service = new PostService();
 
@@ -68,12 +70,18 @@ export function ReplyPost(props: ReplyPostProps) {
     };
 
     return (
-        <div className="flex flex-col gap-4 justify-center">
+        <div className="flex flex-col gap-4 justify-center" onClick={(e) => e.stopPropagation()}>
             <div className="flex gap-4 rounded-lg mt-4">
-                <Avatar className="size-6">
-                    <AvatarImage src="src/assets/spotsync_icon.svg" />
-                </Avatar>
-                <p className="text-xs h-fit w-full">
+                {
+                    props.parentPost.creator.profile.profile_picture ? (
+                        <Avatar className="size-6 caret-transparent">
+                            <AvatarImage src={props.parentPost.creator.profile.profile_picture} />
+                        </Avatar>
+                    ) : (
+                        <DefaultUserIcon/>
+                    )
+                }
+                <p className="text-xs h-fit w-full caret-transparent">
                     {props.parentPost.content}
                 </p>
             </div>
@@ -114,21 +122,16 @@ export function ReplyPost(props: ReplyPostProps) {
                         <div className="flex gap-4 items-center justify-between">
                             <div className="flex gap-2">
                                 <UploadFile>
-                                    <div className="flex gap-2 items-center cursor-pointer">
+                                    <div className="flex gap-2 items-center cursor-pointer caret-transparent">
                                         <FaRegImage className="text-md size-4"/>
                                         <span className="text-xs">Image</span>
                                     </div>
                                 </UploadFile>
-                                <button className="outline-none text-foreground focus:text-secondary duration-100 hover:text-secondary">
-                                    <div className="flex gap-2 items-center cursor-pointer">
-                                        <FaRegSmile className="text-md size-4"/>
-                                        <span className="text-xs">
-                                            Emoji
-                                        </span>
-                                    </div>
-                                </button>
                             </div>
-                            <Button className="focus-visible:outline-primary focus-visible:ring-0" disabled={isPending || !replyPostForm.watch('content')}>
+                            <Button 
+                                className="focus-visible:outline-primary focus-visible:ring-0 caret-transparent" 
+                                disabled={isPending || !replyPostForm.watch('content')}
+                                onClick={(e) => e.stopPropagation()}>
                                 {isPending ? <Spinner/> : "Reply"}
                             </Button>
                         </div>

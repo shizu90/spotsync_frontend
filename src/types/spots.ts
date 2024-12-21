@@ -7,6 +7,26 @@ export type SpotAttachment = {
     url: string;
 }
 
+export enum SpotType {
+    RESTAURANT = 'restaurant',
+	HOTEL = 'hotel',
+	MALL = 'mall',
+	PARK = 'park',
+	MUSEUM = 'museum',
+	THEATER = 'theater',
+	MONUMENT = 'monument',
+	BEACH = 'beach',
+	UNIVERSITY = 'university',
+	LIBRARY = 'library',
+	AIRPORT = 'airpot',
+	TRAIN_STATION = 'train station',
+	STADIUM = 'stadium',
+	CHURCH = 'church',
+	AQUARIUM = 'aquarium',
+	ISLAND = 'island',
+	OTHER = 'other',
+}
+
 export type Spot = {
     id: string;
     name: string;

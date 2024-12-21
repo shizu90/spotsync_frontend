@@ -2,6 +2,7 @@ import { useAuthStore } from "@/hooks/auth-store";
 import clsx from "clsx";
 import { FaChevronDown, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { FaGear } from "react-icons/fa6";
+import { DefaultUserIcon } from "../icon/default-user-icon";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
@@ -16,9 +17,14 @@ export function NavbarUser() {
                     "flex items-center justify-center gap-2 px-2 py-2"
                 )}>
                     <h3 className="text-sm">{auth?.user.profile.display_name}</h3>
-                    <Avatar className="size-5">
-                        <AvatarImage src="src/assets/spotsync_icon.svg" />
-                    </Avatar>
+                    {
+                        auth?.user.profile.profile_picture ? 
+                            <Avatar className="size-5">
+                                <AvatarImage src={auth?.user.profile.profile_picture} />
+                            </Avatar>
+                        : 
+                            <DefaultUserIcon className="size-5 p-1"/>
+                    }
                     <FaChevronDown className="size-3"/>
                 </div>
             </DropdownMenuTrigger>

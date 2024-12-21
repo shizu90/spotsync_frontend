@@ -39,7 +39,7 @@ export function Threads() {
             {
                 posts?.map((item) => (
                     <div key={item.id} className="w-full">
-                        <Thread post={item}/>
+                        <Thread post={item} shouldNavigate={true}/>
                     </div>
                 ))
             }

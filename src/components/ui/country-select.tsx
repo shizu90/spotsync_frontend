@@ -17,10 +17,10 @@ export function CountrySelect(props: CountrySelectProps) {
         <SelectTrigger className={props.className}>
           <SelectValue placeholder={props.placeholder ? props.placeholder : "Select a country"}/>
         </SelectTrigger>
-        <SelectContent className="bg-popover">
+        <SelectContent className="bg-popover w-full">
             {
                 countryRegionData.countryTuples.map((c) => (
-                    <SelectItem key={c[1]} value={c[1]}>
+                    <SelectItem key={c[1]} value={c[1]} className="max-w-full truncate text-left">
                         {c[0]}
                     </SelectItem>
                 ))

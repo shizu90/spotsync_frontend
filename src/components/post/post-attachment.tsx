@@ -10,7 +10,7 @@ interface PostAttachmentProps {
 
 export function PostAttachment(props: PostAttachmentProps) {
     return (
-        <Dialog>
+        <Dialog data-ignore-nested-link>
             {
                 props.attachment.file_type.includes("image") ? (
                     <>
@@ -18,7 +18,7 @@ export function PostAttachment(props: PostAttachmentProps) {
                             clsx(
                                 `cursor-pointer ${props.className}`
                             )
-                        }>
+                        } onClick={(e) => e.stopPropagation()}>
                             <img src={props.attachment.url} className={clsx(
                                 "rounded-lg border border-foreground/10 shadow-sm object-cover",
                                 props.className,
@@ -27,6 +27,7 @@ export function PostAttachment(props: PostAttachmentProps) {
                         <DialogContent 
                             className="p-0 border-0 shadow-none rounded-lg"
                             aria-describedby={undefined}
+                            data-ignore-nested-link
                         >
                             <DialogTitle className="hidden">
                                 Attachment

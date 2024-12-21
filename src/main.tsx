@@ -11,6 +11,7 @@ import { PrivateRoute } from './routes/private.tsx';
 import { ResetPassword } from './routes/reset-password.tsx';
 import { SignIn } from './routes/sign-in.tsx';
 import { SignUp } from './routes/sign-up/sign-up.tsx';
+import { Spots } from './routes/spots/spots.tsx';
 import { UserActivation } from './routes/user-activation.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />}>
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />}/>
+            <Route path="/spots" element={<Spots />}/>
             <Route path="/posts/:postId" element={<PostDetail />}/>
           </Route>
           <Route path="/sign-in" element={<SignIn />} />

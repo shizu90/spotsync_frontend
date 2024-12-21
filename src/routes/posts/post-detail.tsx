@@ -1,4 +1,4 @@
-import { Post } from "@/components/post/post";
+import { Thread } from "@/components/post/thread";
 import { Spinner } from "@/components/ui/spinner";
 import { PostService } from "@/services/posts";
 import { useQuery } from "@tanstack/react-query";
@@ -19,20 +19,20 @@ export function PostDetail() {
     })
 
     return (
-        <div className="flex flex-col gap-4 w-2/5">
+        <div className="flex flex-col gap-4 md:w-3/5 w-full">
             {
                 isLoading ? (
                     <Spinner/>
                 ) : (
                     data ? (
                         <div>
-                            <Post post={data.data.data}/>
+                            <Thread post={data.data.data} shouldNavigate={false} showReplyingTo={true}/>
 
                             <hr className="my-4 border-foreground/10"/>
 
                             {
                                 data.data.data.children_posts.map((post) => (
-                                    <Post post={post} key={post.id}/>
+                                    <Thread post={post} key={post.id} shouldNavigate={true} showReplyingTo={false}/>
                                 ))
                             }
                         </div>

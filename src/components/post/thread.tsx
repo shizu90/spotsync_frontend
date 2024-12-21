@@ -6,7 +6,8 @@ import { Post as PostModel } from "@/types/posts";
 import clsx from "clsx";
 import { useState } from "react";
 import { FaHeart, FaReply } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { DefaultUserIcon } from "../icon/default-user-icon";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { PostAttachment } from "./post-attachment";
@@ -14,12 +15,15 @@ import { ReplyPost } from "./reply-post";
 
 interface ThreadProps {
     post: PostModel;
+    shouldNavigate?: boolean;
+    showReplyingTo?: boolean;
 }
 
 export function Thread(props: ThreadProps) {
     const [post, setPost] = useState<PostModel>(props.post);
     const [isReplying, setIsReplying] = useState(false);
     const { toast } = useToast();
+    const navigate = useNavigate();
     
     const refetchPost = () => {
         const post = new PostService();
@@ -61,23 +65,59 @@ export function Thread(props: ThreadProps) {
     };
 
     return (
-        <div className="bg-popover border border-foreground/10 shadow-sm flex flex-col gap-4 p-4 rounded-lg">
+        <div 
+            className={clsx(
+                "bg-popover border border-foreground/10 shadow-sm flex flex-col gap-4 p-4 rounded-lg z-0",
+                props.shouldNavigate ? "hover:cursor-pointer" : ""
+            )}
+            onClick={(_) => {props.shouldNavigate ? navigate(`/posts/${post.id}`) : null}}
+            id={`post-${post.id}`}
+        >
+            {
+                props.post.parent_id && props.showReplyingTo ? (
+                    <Link
+                        to={`/posts/${props.post.parent_id}`}
+                        className="text-xs flex gap-2 items-center hover:text-secondary caret-transparent"
+                    >
+                        <FaReply className="size-3"/>
+                        Replying to {props.post.parent?.creator.profile.display_name}'s post
+                    </Link>
+                ) : null
+            }
             <div className="w-ful flex justify-between">
                 <div className="flex gap-4">
                     {
                         post.group ? (
                             <div className="flex flex-col relative w-10">
-                                <Avatar className="size-8">
-                                    <AvatarImage src="src/assets/spotsync_icon.svg" />
-                                </Avatar>
-                                <Avatar className="size-6 absolute bottom-0 right-0">
-                                    <AvatarImage src="src/assets/spotsync_icon.svg" />
-                                </Avatar>
+                                <Link
+                                    to={`/groups/${props.post.group?.id}`}
+                                >
+                                    <Avatar className="size-8">
+                                        <AvatarImage src={props.post.group?.group_picture} />
+                                    </Avatar>
+                                </Link>
+                                <Link
+                                    to={`/users/${props.post.creator.id}`}
+                                >
+                                    <Avatar className="size-6 absolute bottom-0 right-0">
+                                        <AvatarImage src={props.post.creator.profile.profile_picture} />
+                                    </Avatar>
+                                </Link>
                             </div>
                         ) : (
-                            <Avatar className="size-10">
-                                <AvatarImage src="src/assets/spotsync_icon.svg" />
-                            </Avatar>
+                            <Link
+                                to={`/users/${props.post.creator.id}`}
+                            >
+                                {
+                                props.post.creator.profile.profile_picture ? (
+                                    <Avatar className="size-10">
+                                        <AvatarImage src={props.post.creator.profile.profile_picture} className="hover:opacity-90"/>
+                                    </Avatar>
+                                ) : (
+                                    <DefaultUserIcon className="p-2"/>
+                                )
+                                }
+                            </Link>
                         )
                     }
                     <div className="flex flex-col gap-[-2]">
@@ -96,20 +136,13 @@ export function Thread(props: ThreadProps) {
                         </span>
                     </div>
                 </div>
-                {
-                    post.total_childrens > 0 && (
-                        <Link to={`/posts/${props.post.id}`} className="text-sm hover:underline hover:text-secondary">
-                            View thread
-                        </Link>
-                    )
-                }
             </div>
             <div>
-                <p className="text-sm">
+                <p className="text-sm caret-transparent">
                     {post.content}
                 </p>
                 <div className={clsx(
-                    "flex gap-4 items-center flex-wrap",
+                    "flex gap-4 items-center flex-wrap caret-transparent",
                     post.attachments.length > 0 ? "mt-4" : ""
                 )}>
                     {
@@ -119,6 +152,7 @@ export function Thread(props: ThreadProps) {
                                 attachment={attachment}
                                 className="w-5/12 h-32"
                                 key={attachment.id}
+                                data-ignore-nested-link
                             />
                         ))
                     }
@@ -128,8 +162,8 @@ export function Thread(props: ThreadProps) {
                 <Dialog open={isReplying} onOpenChange={() => {
                     setIsReplying(!isReplying);
                 }}>
-                    <DialogTrigger asChild>
-                        <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary">
+                    <DialogTrigger asChild className="z-10" onClick={(e) => e.stopPropagation()}>
+                        <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary caret-transparent">
                             <FaReply/>
                             <span>{post.total_childrens} replies</span>
                         </button>
@@ -138,13 +172,13 @@ export function Thread(props: ThreadProps) {
                         <DialogHeader>
                             <DialogTitle>Reply to {post.creator.profile.display_name}'s post</DialogTitle>
                         </DialogHeader>
-                        <ReplyPost parentPost={post} onReplied={onReplied}/>
+                        <ReplyPost parentPost={props.post} onReplied={onReplied}/>
                     </DialogContent>
                 </Dialog>
                 <button className={clsx(
-                    "flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary",
+                    "flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary caret-transparent",
                     post.liked ? "text-secondary" : "text-foreground"
-                )} onClick={() => likePost()}>
+                )} onClick={(e) => {likePost();e.stopPropagation()}} data-ignore-nested-link>
                     <FaHeart/>
                     <span>{post.total_likes} likes</span>
                 </button>
