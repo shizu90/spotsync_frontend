@@ -35,6 +35,7 @@ export function SpotsFilters(props: SpotsFiltersProps) {
                 <Input
                     placeholder="Search for spots"
                     className="h-10"
+                    onChange={(e) => props.onFiltersChange({...props.filters, search: e.target.value})}
                 />
             </div>
 
@@ -44,7 +45,10 @@ export function SpotsFilters(props: SpotsFiltersProps) {
                 </h3>
 
                 <MultiSelect
-                    options={Object.entries(SpotType).map(([key, value]) => ({ label: key, value }))}
+                    options={Object.entries(SpotType).map(([key, value]) => ({ 
+                        label: value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase(),
+                        value: key 
+                    }))}
                     placeholder="Select types"
                     defaultValue={props.filters.types}
                     onValueChange={(types) => props.onFiltersChange({...props.filters, types})}
@@ -72,25 +76,26 @@ export function SpotsFilters(props: SpotsFiltersProps) {
                         <div className="flex flex-col mt-2 gap-2">
                             <CountrySelect
                                 value={props.filters.address?.country}
-                                onChange={(country) => props.onFiltersChange({...props.filters, address: { ...props.filters.address, country, state: undefined }})}
+                                onChange={(country) => props.onFiltersChange({...props.filters, address: { ...props.filters.address, country, state: undefined }, distance: undefined})}
                             />
                             <StateSelect
                                 disabled={!props.filters.address?.country}
                                 country={props.filters.address?.country}
                                 value={props.filters.address?.state}
-                                onChange={(state) => props.onFiltersChange({...props.filters, address: { ...props.filters.address, state }})}
+                                onChange={(state) => props.onFiltersChange({...props.filters, address: { ...props.filters.address, state }, distance: undefined})}
                             />
                             <Input
                                 placeholder="City"
                                 className="h-10"
                                 disabled={!props.filters.address?.state}
+                                onChange={(e) => props.onFiltersChange({...props.filters, address: { ...props.filters.address, city: e.target.value }, distance: undefined})}
                             />
                         </div>
                     ) : (
                         <DualRangeSlider
                             label={(value) => <span className="text-xs mt-10">{value}km</span>}
-                            value={props.filters.distance}
-                            onValueChange={(distance) => props.onFiltersChange({...props.filters, distance})}
+                            value={props.filters.distance || [0, 30]}
+                            onValueChange={(distance) => props.onFiltersChange({...props.filters, distance, address: undefined})}
                             min={0}
                             max={100}
                             step={1}
@@ -107,7 +112,7 @@ export function SpotsFilters(props: SpotsFiltersProps) {
 
                 <DualRangeSlider
                     label={(value) => <span className="text-xs mt-10">{value}</span>}
-                    value={props.filters.rating}
+                    value={props.filters.rating || [0, 10]}
                     onValueChange={(rating) => props.onFiltersChange({...props.filters, rating})}
                     min={0}
                     max={10}

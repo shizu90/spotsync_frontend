@@ -4,7 +4,14 @@ import { ApiService } from "./api-service";
 
 type ListSpotsQuery = {
     name?: string;
-    type?: string;
+    min_rating?: number;
+    max_rating?: number;
+    min_distance?: number;
+    max_distance?: number;
+    country?: string;
+    state?: string;
+    city?: string;
+    type?: string[];
     creator_id?: string;
     visited_by_id?: string;
     sort?: string;
@@ -33,7 +40,8 @@ export class SpotService extends ApiService {
         return await this.client.get('/spots', {
             params: {
                 paginate: true,
-                ...query
+                ...query,
+                types: query?.type ? query.type.join(',') : undefined
             }
         });
     }
