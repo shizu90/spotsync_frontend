@@ -1,5 +1,5 @@
 import { SpotEvent } from "@/components/spot-events/spot-event";
-import { Spinner } from "@/components/ui/spinner";
+import { SpotEventSkeleton } from "@/components/spot-events/spot-event-skeleton";
 import { SpotEventService } from "@/services/spot-events";
 import { SpotEventStatus } from "@/types/spot-events";
 import { useQuery } from "@tanstack/react-query";
@@ -30,9 +30,14 @@ export function OnGoingSpotEvents() {
             <main className="h-fit">
                 {
                     isLoading ? (
-                        <Spinner/>
+                        <div className="flex flex-col gap-2">
+                            <SpotEventSkeleton/>
+                            <SpotEventSkeleton/>
+                            <SpotEventSkeleton/>
+                        </div>
                     ) : (
                         data && data.data.data.items.length > 0 ? (
+                            <>
                                 <ul>
                                     {
                                         data?.data.data.items.map((spotEvent, index) => (
@@ -44,6 +49,12 @@ export function OnGoingSpotEvents() {
                                         ))
                                     }
                                 </ul>
+                                <footer className="text-center text-xs text-foreground hover:underline my-4">
+                                    <Link to={`/spot-events?status=ongoing`}>
+                                        View more on-going spot events
+                                    </Link>
+                                </footer>
+                            </>
                         ) : (
                             <div className="p-4 text-center text-foreground text-xs">
                                 No on-going spot events
@@ -52,11 +63,6 @@ export function OnGoingSpotEvents() {
                             
                     )
                 }
-                <footer className="text-center text-xs text-foreground hover:underline my-4">
-                    <Link to={`/spot-events?status=ongoing`}>
-                        View more on-going spot events
-                    </Link>
-                </footer>
             </main>
         </article>
     );

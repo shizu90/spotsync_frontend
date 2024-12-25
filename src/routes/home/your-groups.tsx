@@ -1,5 +1,5 @@
 import { Group } from "@/components/groups/group";
-import { Spinner } from "@/components/ui/spinner";
+import { GroupSkeleton } from "@/components/groups/group-skeleton";
 import { GroupService } from "@/services/groups";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -27,20 +27,30 @@ export function YourGroups() {
             <main className="h-fit">
                 {
                     isLoading ? (
-                        <Spinner/>
+                        <div className="flex flex-col gap-2">
+                            <GroupSkeleton/>
+                            <GroupSkeleton/>
+                        </div>
                     ) : (
                         data && data.data.data.items.length > 0 ? (
-                            <ul>
-                                {
-                                    data?.data.data.items.map((group, index) => (
-                                        <li className={clsx(
-                                            index !== 0 && 'mt-2'
-                                        )} key={group.id}>
-                                            <Group group={group} key={group.id}/>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
+                            <>
+                                <ul>
+                                    {
+                                        data?.data.data.items.map((group, index) => (
+                                            <li className={clsx(
+                                                index !== 0 && 'mt-2'
+                                            )} key={group.id}>
+                                                <Group group={group} key={group.id}/>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                                <footer className="text-center text-xs text-foreground hover:underline my-4">
+                                    <Link to={`/groups?participating=true`}>
+                                        View more groups
+                                    </Link>
+                                </footer>
+                            </>
                         ) : (
                             <div className="p-4 text-center text-foreground text-xs">
                                 No groups
@@ -48,11 +58,6 @@ export function YourGroups() {
                         )
                     )
                 }
-                <footer className="text-center text-xs text-foreground hover:underline my-4">
-                    <Link to={`/groups?participating=true`}>
-                        View more groups
-                    </Link>
-                </footer>
             </main>
         </article>
     );

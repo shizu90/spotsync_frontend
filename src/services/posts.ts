@@ -5,6 +5,8 @@ import { ApiService } from "./api-service";
 interface ListPostsQuery {
     group_id?: string;
     user_id?: string;
+    parent_id?: string;
+    depth_level?: number;
     sort?: string;
     sort_direction?: 'asc' | 'desc';
     paginate?: boolean;
@@ -34,6 +36,7 @@ export class PostService extends ApiService {
     }
 
     public async paginatePosts(query?: ListPostsQuery): Promise<ApiResponse<Pagination<Post>>> {
+        await Promise.resolve(setTimeout(() => 8000))
         return await this.client.get('/threads', {
             params: {
                 paginate: true,

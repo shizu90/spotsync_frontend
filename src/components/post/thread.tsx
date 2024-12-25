@@ -60,7 +60,7 @@ export function Thread(props: ThreadProps) {
         setIsReplying(false);
         setPost({
             ...post,
-            total_childrens: post.total_childrens + 1,
+            total_replies: post.total_replies + 1,
         });
 
         navigate(`/posts/${post.id}`);
@@ -167,7 +167,7 @@ export function Thread(props: ThreadProps) {
                     <DialogTrigger asChild className="z-10" onClick={(e) => e.stopPropagation()}>
                         <button className="flex gap-2 items-center text-sm duration-100 focus:text-secondary hover:text-secondary caret-transparent">
                             <FaReply/>
-                            <span>{post.total_childrens} replies</span>
+                            <span>{post.total_replies} replies</span>
                         </button>
                     </DialogTrigger>
                     <DialogContent className="">

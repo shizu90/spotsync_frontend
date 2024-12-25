@@ -29,7 +29,7 @@ export type Post = {
     parent_id?: string;
     group?: Group;
     children_posts: Post[];
-    total_childrens: number;
+    total_replies: number;
     total_likes: number;
     liked: boolean;
 }

@@ -1,5 +1,5 @@
 import { Spot } from "@/components/spots/spot";
-import { Spinner } from "@/components/ui/spinner";
+import { SpotSkeleton } from "@/components/spots/spot-skeleton";
 import { SpotService } from "@/services/spots";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -30,20 +30,31 @@ export function ClosestSpots() {
             <main className="h-fit">
                 {
                     isLoading ? (
-                        <Spinner/>
+                        <div className="flex flex-col gap-2">
+                            <SpotSkeleton/>
+                            <SpotSkeleton/>
+                            <SpotSkeleton/>
+                        </div>
                     ) : (
                         data && data.data.data.items.length > 0 ? (
-                            <ul>
-                                {
-                                    data?.data.data.items.map((spot, index) => (
-                                        <li className={clsx(
-                                            index !== 0 && 'mt-2'
-                                        )} key={spot.id}>
-                                            <Spot spot={spot} key={spot.id}/>
-                                        </li>
-                                    ))
-                                }
-                            </ul>
+                            <>
+                                <ul>
+                                    {
+                                        data?.data.data.items.map((spot, index) => (
+                                            <li className={clsx(
+                                                index !== 0 && 'mt-2'
+                                            )} key={spot.id}>
+                                                <Spot spot={spot} key={spot.id}/>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                                <footer className="text-center text-xs text-foreground hover:underline my-4">
+                                    <Link to={`/spots?sort=distance`}>
+                                        View more spots near you
+                                    </Link>
+                                </footer>
+                            </>
                         ) : (
                             <div className="p-4 text-center text-foreground text-xs">
                                 No spots near you
@@ -51,11 +62,6 @@ export function ClosestSpots() {
                         )
                     )
                 }
-                <footer className="text-center text-xs text-foreground hover:underline my-4">
-                    <Link to={`/spots?sort=distance`}>
-                        View more spots near you
-                    </Link>
-                </footer>
             </main>
         </article>
     );
