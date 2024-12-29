@@ -59,6 +59,13 @@ export function SignIn() {
 
     const { mutateAsync: signInMutate, isPending } = useMutation({
         mutationFn: signInFn,
+        onError: (err: any) => {
+            toast({
+                "title": "Error",
+                "description": err.response.data.message,
+                "variant": "destructive",
+            });
+        }
     });
 
     useEffect(() => {
@@ -99,17 +106,12 @@ export function SignIn() {
             });
 
             navigate("/");
-        }).catch((err) => {
-            toast({
-                "title": "Error",
-                "description": err.response.data.message,
-                "variant": "destructive",
-            });
         });
     };
 
     const signInWithName = async (values: SignInWithNameFormValues) => {
         signInMutate(values).then((res) => {
+            console.log(res);
             signIn({
                 bearerToken: res.data.data.bearer_token,
                 user: res.data.data.user,
@@ -122,12 +124,6 @@ export function SignIn() {
             });
 
             navigate("/");
-        }).catch((err) => {
-            toast({
-                "title": "Error",
-                "description": err.response.data.message,
-                "variant": "destructive",
-            });
         });
     };
 

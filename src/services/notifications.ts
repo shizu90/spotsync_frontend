@@ -37,4 +37,10 @@ export class NotificationService extends ApiService {
     public async readAll(): Promise<void> {
         await this.client.patch('notifications/read-all');
     }
+
+    public async getTotalUnread(): Promise<ApiResponse<number>> {
+        const response = await this.client.get('/notifications/total-unread');
+
+        return response;
+    }
 }

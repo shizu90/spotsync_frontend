@@ -2,7 +2,7 @@ import { useNotification } from "@/hooks/use-notification";
 import { useToast } from "@/hooks/use-toast";
 import { NotificationService } from "@/services/notifications";
 import { Notification as NotificationModel } from "@/types/notifications";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { FaBell } from "react-icons/fa";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -29,6 +29,14 @@ export function NavbarNotifications() {
         },
         initialPageParam: 1
     });
+    const totalUnread = useQuery({
+        queryKey: ['navbar-notifications-total-unread'],
+        queryFn: () => {
+            const notificationService = new NotificationService();
+
+            return notificationService.getTotalUnread();
+        }
+    });
 
     const notifications = useMemo(() => {
         return data?.pages.reduce((acc: NotificationModel[], page) => {
@@ -43,6 +51,10 @@ export function NavbarNotifications() {
 
         queryClient.invalidateQueries({
             queryKey: ['navbar-notifications']
+        });
+
+        queryClient.invalidateQueries({
+            queryKey: ['navbar-notifications-total-unread']
         });
     };
 
@@ -62,7 +74,16 @@ export function NavbarNotifications() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="rounded-full focus:bg-foreground/10 p-1 h-fit">
-                <FaBell className="size-4"/>
+                <div className="relative caret-transparent">
+                    <FaBell className="size-4"/>
+                    {
+                        totalUnread.data && totalUnread.data.data.data > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] rounded-full w-4 h-4 flex justify-center items-center">
+                                {totalUnread.data.data.data}
+                            </span>
+                        )
+                    }
+                </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="border-none w-72" align="end">
                 <div className="w-full flex justify-between p-2 items-center">
@@ -78,7 +99,11 @@ export function NavbarNotifications() {
                             next={fetchNextPage}
                             hasMore={hasNextPage}
                             loader={<Spinner/>}
-                            endMessage={<p className="text-center text-sm text-foreground/60 mt-8">No more notifications to show</p>}
+                            endMessage={
+                                <p className="text-center text-xs text-foreground/60 my-4">
+                                    No more notifications to show
+                                </p>
+                            }
                             className="flex flex-col gap-1 h-full max-h-72"
                             height={300}
                         >
@@ -90,6 +115,10 @@ export function NavbarNotifications() {
                                             onRead={() => {
                                                 queryClient.invalidateQueries({
                                                     queryKey: ['navbar-notifications']
+                                                });
+
+                                                queryClient.invalidateQueries({
+                                                    queryKey: ['navbar-notifications-total-unread']
                                                 });
                                             }}
                                         />
